@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_text_field.dart';
+import 'package:moi_interview/router.dart';
 import 'package:moi_interview/utils/color_styles.dart';
 import 'package:moi_interview/utils/size_config.dart';
 import 'package:moi_interview/utils/text_styles.dart';
@@ -91,7 +93,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             DefaultButton(
               title: '시작하기',
-              onPressed: _isButtonEnabled ? () {} : null,
+              onPressed: _isButtonEnabled
+                  ? () {
+                      context.go('/home');
+                    }
+                  : null,
             )
           ],
         ),

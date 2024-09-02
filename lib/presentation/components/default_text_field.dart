@@ -31,7 +31,7 @@ class DefaultTextField extends StatelessWidget {
           cursorWidth: 1.0,
           decoration: InputDecoration(
             hintText: palceHolder,
-            hintStyle: TextStyles.colorCaption,
+            hintStyle: TextStyles.colorCaption(ColorStyles.gray4),
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: ColorStyles.gray3, width: 1.0),
             ),

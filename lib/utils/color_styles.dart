@@ -6,6 +6,7 @@ abstract class ColorStyles {
   static const Color gray2 = Color(0xFF797979);
   static const Color gray3 = Color(0xFFE5E5EC);
   static const Color gray4 = Color(0xFFD9D9D9);
+  static const Color gray5 = Color(0xFFEEEEEE);
   static const Color white = Color(0xFFFFFFFF);
 
   static const Color primary = Color(0xFF001D85);
