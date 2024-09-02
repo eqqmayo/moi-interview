@@ -14,23 +14,26 @@ class DefaultButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: getWidth(336),
-      height: getHeight(56),
-      child: TextButton(
-        onPressed: onPressed,
-        style: TextButton.styleFrom(
-            backgroundColor:
-                onPressed == null ? ColorStyles.gray4 : ColorStyles.primary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4.0),
-            )),
-        child: Text(
-          title,
-          style: TextStyle(
-            color: onPressed == null ? ColorStyles.gray2 : ColorStyles.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+      child: SizedBox(
+        width: double.infinity,
+        height: getHeight(56),
+        child: TextButton(
+          onPressed: onPressed,
+          style: TextButton.styleFrom(
+              backgroundColor:
+                  onPressed == null ? ColorStyles.gray4 : ColorStyles.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              )),
+          child: Text(
+            title,
+            style: TextStyle(
+              color: onPressed == null ? ColorStyles.gray2 : ColorStyles.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
       ),
