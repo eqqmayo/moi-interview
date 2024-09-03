@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_dialog.dart';
 import 'package:moi_interview/utils/color_styles.dart';
@@ -16,7 +15,9 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: ColorStyles.white,
         actions: [
           IconButton(
-              onPressed: () {}, icon: const Icon(Icons.settings_outlined))
+            onPressed: () {},
+            icon: const Icon(Icons.settings_outlined),
+          )
         ],
       ),
       body: SafeArea(

@@ -24,7 +24,6 @@ class DefaultTextField extends StatelessWidget {
           title,
           style: TextStyles.caption,
         ),
-        SizedBox(height: getHeight(12)),
         TextField(
           controller: controller,
           cursorColor: ColorStyles.black,

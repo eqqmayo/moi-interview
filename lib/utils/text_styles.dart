@@ -9,6 +9,12 @@ abstract class TextStyles {
 
   static TextStyle colorHeading = heading.copyWith(color: ColorStyles.primary);
 
+  static const TextStyle heading2 = TextStyle(
+    color: ColorStyles.black,
+    fontSize: 22,
+    fontWeight: FontWeight.w500,
+  );
+
   static const TextStyle subHeading = TextStyle(
     color: ColorStyles.black,
     fontSize: 18,
