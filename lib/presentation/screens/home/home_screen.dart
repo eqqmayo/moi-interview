@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_dialog.dart';
@@ -16,7 +17,9 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: ColorStyles.white,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.push('/setting');
+            },
             icon: const Icon(Icons.settings_outlined),
           )
         ],
@@ -77,7 +80,7 @@ class HomeScreen extends StatelessWidget {
                     builder: (context) {
                       return const DefaultDialog(
                         title: '제목 입력',
-                        placeHolder: ' 제목을 입력하세요',
+                        placeholder: ' 제목을 입력하세요',
                       );
                     });
               },

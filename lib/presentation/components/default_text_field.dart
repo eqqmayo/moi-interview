@@ -4,13 +4,13 @@ import 'package:moi_interview/utils/text_styles.dart';
 
 class DefaultTextField extends StatelessWidget {
   final String title;
-  final String placeholder;
+  final String? placeholder;
   final TextEditingController? controller;
 
   const DefaultTextField({
     super.key,
     required this.title,
-    required this.placeholder,
+    this.placeholder,
     this.controller,
   });
 

@@ -5,14 +5,14 @@ import 'package:moi_interview/utils/text_styles.dart';
 
 class DefaultDialog extends StatelessWidget {
   final String title;
-  final String placeHolder;
+  final String placeholder;
   final TextEditingController? controller;
 
   const DefaultDialog({
     super.key,
     this.controller,
     required this.title,
-    required this.placeHolder,
+    required this.placeholder,
   });
 
   @override
@@ -40,7 +40,7 @@ class DefaultDialog extends StatelessWidget {
                 cursorWidth: 1.0,
                 controller: controller,
                 decoration: InputDecoration(
-                  hintText: placeHolder,
+                  hintText: placeholder,
                   hintStyle: TextStyles.colorCaption(ColorStyles.gray4),
                   enabledBorder: const UnderlineInputBorder(
                     borderSide:

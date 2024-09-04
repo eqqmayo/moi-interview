@@ -34,6 +34,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
   }
 
+  void _dismissKeyboard() {
+    FocusScope.of(context).unfocus();
+  }
+
   @override
   void dispose() {
     _nameTextController.removeListener(_onTextChanged);
@@ -45,70 +49,74 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorStyles.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: getHeight(100)),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                                text: '이름', style: TextStyles.colorHeading),
-                            const TextSpan(
-                                text: '과 ', style: TextStyles.heading),
-                            TextSpan(
-                                text: '한마디', style: TextStyles.colorHeading),
-                            const TextSpan(
-                                text: '를\n', style: TextStyles.heading),
-                            const TextSpan(
-                                text: '입력해주세요', style: TextStyles.heading),
-                          ],
+    return GestureDetector(
+      onTap: _dismissKeyboard,
+      child: Scaffold(
+        backgroundColor: ColorStyles.white,
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: getHeight(100)),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: '이름', style: TextStyles.colorHeading),
+                              const TextSpan(
+                                  text: '과 ', style: TextStyles.heading),
+                              TextSpan(
+                                  text: '한마디', style: TextStyles.colorHeading),
+                              const TextSpan(
+                                  text: '를\n', style: TextStyles.heading),
+                              const TextSpan(
+                                  text: '입력해주세요', style: TextStyles.heading),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(height: getHeight(48)),
-                      DefaultTextField(
-                        title: '이름',
-                        placeholder: ' 이름 또는 닉네임을 입력해주세요',
-                        controller: _nameTextController,
-                      ),
-                      SizedBox(height: getHeight(24)),
-                      DefaultTextField(
-                        title: '한마디',
-                        placeholder: ' 나를 응원하는 한마디를 작성해보세요',
-                        controller: _wordTextController,
-                      ),
-                    ],
+                        SizedBox(height: getHeight(48)),
+                        DefaultTextField(
+                          title: '이름',
+                          placeholder: ' 이름 또는 닉네임을 입력해주세요',
+                          controller: _nameTextController,
+                        ),
+                        SizedBox(height: getHeight(24)),
+                        DefaultTextField(
+                          title: '한마디',
+                          placeholder: ' 나를 응원하는 한마디를 작성해보세요',
+                          controller: _wordTextController,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            DefaultButton(
-              title: '시작하기',
-              onPressed: _isButtonEnabled
-                  ? () async {
-                      try {
-                        final box = Hive.box('user');
-                        box.put('name', _nameTextController.text);
-                        box.put('word', _wordTextController.text);
+              DefaultButton(
+                title: '시작하기',
+                onPressed: _isButtonEnabled
+                    ? () async {
+                        try {
+                          final box = Hive.box('user');
+                          box.put('name', _nameTextController.text);
+                          box.put('word', _wordTextController.text);
 
-                        if (!mounted) return;
-                        context.go('/home');
-                      } catch (e) {
-                        print('failed to save data: $e');
+                          if (!mounted) return;
+
+                          context.go('/home');
+                        } catch (e) {
+                          print('failed to save data: $e');
+                        }
                       }
-                    }
-                  : null,
-            )
-          ],
+                    : null,
+              )
+            ],
+          ),
         ),
       ),
     );
