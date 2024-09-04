@@ -7,7 +7,7 @@ import 'package:moi_interview/presentation/screens/sign_up/sign_up_screen.dart';
 import 'package:moi_interview/presentation/screens/splash/splash_screen.dart';
 
 final router = GoRouter(
-  initialLocation: '/interview',
+  initialLocation: '/',
   routes: [
     GoRoute(
       path: '/',

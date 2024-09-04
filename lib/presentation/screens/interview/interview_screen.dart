@@ -8,7 +8,7 @@ class InterviewScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          color: Colors.black,
+          color: Colors.white,
           image: DecorationImage(
             image: AssetImage('assets/images/interviewer.jpg'),
             fit: BoxFit.contain,

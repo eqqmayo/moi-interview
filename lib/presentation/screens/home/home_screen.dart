@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_dialog.dart';
 import 'package:moi_interview/utils/color_styles.dart';
@@ -26,16 +27,33 @@ class HomeScreen extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 24.0),
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(text: '칼리아', style: TextStyles.colorHeading),
-                    const TextSpan(text: '님의 면접\n', style: TextStyles.heading),
-                    const TextSpan(
-                        text: '하나만 붙으면 된다..', style: TextStyles.heading),
-                  ],
-                ),
-              ),
+              child: ValueListenableBuilder(
+                  valueListenable: Hive.box('user').listenable(),
+                  builder: (context, Box box, widget) {
+                    final String name =
+                        box.get('name', defaultValue: '사용자') as String;
+                    final String word =
+                        box.get('word', defaultValue: '') as String;
+
+                    return RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: name,
+                            style: TextStyles.colorHeading,
+                          ),
+                          const TextSpan(
+                            text: '님의 면접\n',
+                            style: TextStyles.heading,
+                          ),
+                          TextSpan(
+                            text: word,
+                            style: TextStyles.heading,
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
             ),
             const Divider(color: ColorStyles.gray5, thickness: 12),
             Expanded(

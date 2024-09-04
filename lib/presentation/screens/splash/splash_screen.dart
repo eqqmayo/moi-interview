@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:moi_interview/router.dart';
 import 'package:moi_interview/utils/color_styles.dart';
 
@@ -12,10 +13,12 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 2), () {
-      router.go('/sign_up');
-    });
     super.initState();
+
+    Future.delayed(const Duration(seconds: 2), () {
+      if (!mounted) return;
+      Hive.box('user').isEmpty ? router.go('/sign_up') : router.go('/home');
+    });
   }
 
   @override

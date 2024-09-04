@@ -35,10 +35,10 @@ class SettingScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: getHeight(40)),
-                      const DefaultTextField(title: '이름', palceHolder: '칼리아'),
+                      const DefaultTextField(title: '이름', placeholder: '칼리아'),
                       SizedBox(height: getHeight(20)),
                       const DefaultTextField(
-                          title: '한마디', palceHolder: '어쩌구저쩌구'),
+                          title: '한마디', placeholder: '어쩌구저쩌구'),
                       SizedBox(height: getHeight(20)),
                       const Text('함께할 면접관(선택)', style: TextStyles.caption),
                       SizedBox(height: getHeight(10)),

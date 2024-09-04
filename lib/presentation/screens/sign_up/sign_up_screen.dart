@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive/hive.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_text_field.dart';
 import 'package:moi_interview/utils/color_styles.dart';
@@ -21,15 +22,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void initState() {
+    super.initState();
     _nameTextController.addListener(_onTextChanged);
     _wordTextController.addListener(_onTextChanged);
-    super.initState();
   }
 
   void _onTextChanged() {
     setState(() {
-      _isButtonEnabled = _nameTextController.text.isNotEmpty &&
-          _wordTextController.text.isNotEmpty;
+      _isButtonEnabled = _nameTextController.text.trim().isNotEmpty &&
+          _wordTextController.text.trim().isNotEmpty;
     });
   }
 
@@ -76,13 +77,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       SizedBox(height: getHeight(48)),
                       DefaultTextField(
                         title: '이름',
-                        palceHolder: ' 이름 또는 닉네임을 입력해주세요',
+                        placeholder: ' 이름 또는 닉네임을 입력해주세요',
                         controller: _nameTextController,
                       ),
                       SizedBox(height: getHeight(24)),
                       DefaultTextField(
                         title: '한마디',
-                        palceHolder: ' 나를 응원하는 한마디를 작성해보세요',
+                        placeholder: ' 나를 응원하는 한마디를 작성해보세요',
                         controller: _wordTextController,
                       ),
                     ],
@@ -93,8 +94,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
             DefaultButton(
               title: '시작하기',
               onPressed: _isButtonEnabled
-                  ? () {
-                      context.go('/home');
+                  ? () async {
+                      try {
+                        final box = Hive.box('user');
+                        box.put('name', _nameTextController.text);
+                        box.put('word', _wordTextController.text);
+
+                        if (!mounted) return;
+                        context.go('/home');
+                      } catch (e) {
+                        print('failed to save data: $e');
+                      }
                     }
                   : null,
             )

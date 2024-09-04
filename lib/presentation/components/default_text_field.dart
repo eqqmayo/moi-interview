@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:moi_interview/utils/color_styles.dart';
-import 'package:moi_interview/utils/size_config.dart';
 import 'package:moi_interview/utils/text_styles.dart';
 
 class DefaultTextField extends StatelessWidget {
   final String title;
-  final String palceHolder;
+  final String placeholder;
   final TextEditingController? controller;
 
   const DefaultTextField({
     super.key,
     required this.title,
-    required this.palceHolder,
+    required this.placeholder,
     this.controller,
   });
 
@@ -29,7 +28,7 @@ class DefaultTextField extends StatelessWidget {
           cursorColor: ColorStyles.black,
           cursorWidth: 1.0,
           decoration: InputDecoration(
-            hintText: palceHolder,
+            hintText: placeholder,
             hintStyle: TextStyles.colorCaption(ColorStyles.gray4),
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: ColorStyles.gray3, width: 1.0),
