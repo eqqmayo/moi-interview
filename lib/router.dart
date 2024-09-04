@@ -1,12 +1,13 @@
 import 'package:go_router/go_router.dart';
 import 'package:moi_interview/presentation/screens/detail/detail_screen.dart';
 import 'package:moi_interview/presentation/screens/home/home_screen.dart';
+import 'package:moi_interview/presentation/screens/interview/interview_screen.dart';
 import 'package:moi_interview/presentation/screens/setting/setting_screen.dart';
 import 'package:moi_interview/presentation/screens/sign_up/sign_up_screen.dart';
 import 'package:moi_interview/presentation/screens/splash/splash_screen.dart';
 
 final router = GoRouter(
-  initialLocation: '/detail',
+  initialLocation: '/interview',
   routes: [
     GoRoute(
       path: '/',
@@ -23,6 +24,10 @@ final router = GoRouter(
     GoRoute(
       path: '/detail',
       builder: (context, state) => const DetailScreen(),
+    ),
+    GoRoute(
+      path: '/interview',
+      builder: (context, state) => const InterviewScreen(),
     ),
     GoRoute(
       path: '/setting',
