@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moi_interview/utils/color_styles.dart';
 import 'package:moi_interview/utils/size_config.dart';
 import 'package:moi_interview/utils/text_styles.dart';
@@ -7,12 +8,16 @@ class DefaultDialog extends StatelessWidget {
   final String title;
   final String placeholder;
   final TextEditingController? controller;
+  final VoidCallback? onConfirmTapped;
+  final VoidCallback? onCancelTapped;
 
   const DefaultDialog({
     super.key,
     this.controller,
     required this.title,
     required this.placeholder,
+    this.onConfirmTapped,
+    this.onCancelTapped,
   });
 
   @override
@@ -48,7 +53,7 @@ class DefaultDialog extends StatelessWidget {
                   ),
                   focusedBorder: const UnderlineInputBorder(
                     borderSide:
-                        BorderSide(color: ColorStyles.black, width: 1.0),
+                        BorderSide(color: ColorStyles.primary, width: 1.0),
                   ),
                   contentPadding: const EdgeInsets.only(left: 8.0),
                 ),
@@ -58,15 +63,11 @@ class DefaultDialog extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+                    onPressed: onCancelTapped,
                     child: const Text('취소', style: TextStyles.body2),
                   ),
                   TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+                    onPressed: onConfirmTapped,
                     child: Text('확인', style: TextStyles.colorBody2),
                   ),
                 ],

@@ -3,31 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:moi_interview/utils/color_styles.dart';
 import 'package:moi_interview/utils/text_styles.dart';
 
-class QuestionModal extends StatefulWidget {
-  const QuestionModal({super.key});
+class QuestionModal extends StatelessWidget {
+  final TextEditingController controller;
+  final VoidCallback? onCancelTapped;
+  final VoidCallback? onConfirmTapped;
+  final void Function(int) onSelectedItemChanged;
 
-  @override
-  _QuestionModalState createState() => _QuestionModalState();
-}
-
-class _QuestionModalState extends State<QuestionModal> {
-  final _formKey = GlobalKey<FormState>();
-  final _controller = TextEditingController();
-  String _question = '';
-  int _answerTime = 2;
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  const QuestionModal({
+    super.key,
+    required this.controller,
+    this.onCancelTapped,
+    this.onConfirmTapped,
+    required this.onSelectedItemChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(25, 30, 25, 10),
+      color: ColorStyles.white,
+      padding: const EdgeInsets.fromLTRB(25, 25, 25, 10),
       child: Form(
-        key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,7 +33,7 @@ class _QuestionModalState extends State<QuestionModal> {
             ),
             const SizedBox(height: 4),
             TextFormField(
-              controller: _controller,
+              controller: controller,
               cursorColor: ColorStyles.black,
               cursorWidth: 1.0,
               decoration: InputDecoration(
@@ -59,9 +54,7 @@ class _QuestionModalState extends State<QuestionModal> {
                 }
                 return null;
               },
-              onSaved: (value) {
-                _question = value!;
-              },
+              onSaved: (value) {},
             ),
             const SizedBox(height: 20),
             const Text('답변 시간', style: TextStyles.subHeading),
@@ -70,13 +63,9 @@ class _QuestionModalState extends State<QuestionModal> {
               height: 80,
               child: CupertinoPicker(
                 itemExtent: 32,
-                onSelectedItemChanged: (int index) {
-                  setState(() {
-                    _answerTime = index + 1;
-                  });
-                },
+                onSelectedItemChanged: (value) => onSelectedItemChanged(value),
                 scrollController: FixedExtentScrollController(initialItem: 2),
-                children: List<Widget>.generate(5, (int index) {
+                children: List.generate(5, (int index) {
                   return Center(
                     child: Text(
                       '${index + 1} 분',
@@ -86,26 +75,16 @@ class _QuestionModalState extends State<QuestionModal> {
                 }),
               ),
             ),
-            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: onCancelTapped,
                   child: Text('취소',
                       style: TextStyles.body2.copyWith(fontSize: 17)),
                 ),
                 TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      Navigator.pop(context,
-                          {'question': _question, 'answerTime': _answerTime});
-                    }
-                  },
+                  onPressed: onConfirmTapped,
                   child: Text('저장',
                       style: TextStyles.colorBody2.copyWith(fontSize: 17)),
                 ),
