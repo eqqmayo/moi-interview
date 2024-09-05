@@ -1,24 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:moi_interview/utils/color_styles.dart';
 import 'package:moi_interview/utils/size_config.dart';
 import 'package:moi_interview/utils/text_styles.dart';
 
-class DefaultDialog extends StatelessWidget {
+class DefaultDialog extends StatefulWidget {
   final String title;
   final String placeholder;
-  final TextEditingController? controller;
+  final TextEditingController controller;
   final VoidCallback? onConfirmTapped;
   final VoidCallback? onCancelTapped;
 
   const DefaultDialog({
     super.key,
-    this.controller,
+    required this.controller,
     required this.title,
     required this.placeholder,
     this.onConfirmTapped,
     this.onCancelTapped,
   });
+
+  @override
+  State<DefaultDialog> createState() => _DefaultDialogState();
+}
+
+class _DefaultDialogState extends State<DefaultDialog> {
+  bool _isButtonEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_updateButtonState);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_updateButtonState);
+    super.dispose();
+  }
+
+  void _updateButtonState() {
+    setState(() {
+      _isButtonEnabled = widget.controller.text.isNotEmpty;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +60,16 @@ class DefaultDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                title,
+                widget.title,
                 style: TextStyles.subHeading,
               ),
               SizedBox(height: getHeight(8.0)),
               TextField(
                 cursorColor: ColorStyles.black,
                 cursorWidth: 1.0,
-                controller: controller,
+                controller: widget.controller,
                 decoration: InputDecoration(
-                  hintText: placeholder,
+                  hintText: widget.placeholder,
                   hintStyle: TextStyles.colorCaption(ColorStyles.gray4),
                   enabledBorder: const UnderlineInputBorder(
                     borderSide:
@@ -63,11 +87,11 @@ class DefaultDialog extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: onCancelTapped,
+                    onPressed: widget.onCancelTapped,
                     child: const Text('취소', style: TextStyles.body2),
                   ),
                   TextButton(
-                    onPressed: onConfirmTapped,
+                    onPressed: _isButtonEnabled ? widget.onConfirmTapped : null,
                     child: Text('확인', style: TextStyles.colorBody2),
                   ),
                 ],

@@ -48,12 +48,12 @@ class QuestionModal extends StatelessWidget {
                 ),
                 contentPadding: const EdgeInsets.only(left: 8.0),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '질문을 입력해주세요';
-                }
-                return null;
-              },
+              // validator: (value) {
+              //   if (value == null || value.isEmpty) {
+              //     return '질문을 입력해주세요';
+              //   }
+              //   return null;
+              // },
               onSaved: (value) {},
             ),
             const SizedBox(height: 20),

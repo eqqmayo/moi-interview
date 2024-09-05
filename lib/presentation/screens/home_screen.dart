@@ -18,23 +18,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _titleTextController = TextEditingController();
-  bool _isButtonEnabled = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _titleTextController.addListener(_updateButtonState);
-  }
-
-  void _updateButtonState() {
-    setState(() {
-      _isButtonEnabled = _titleTextController.text.isNotEmpty;
-    });
-  }
 
   @override
   void dispose() {
-    _titleTextController.removeListener(_updateButtonState);
     _titleTextController.dispose();
     super.dispose();
   }
@@ -141,27 +127,25 @@ class _HomeScreenState extends State<HomeScreen> {
                         _titleTextController.clear();
                         context.pop();
                       },
-                      onConfirmTapped: _isButtonEnabled
-                          ? () {
-                              Box box = Hive.box('interviews');
-                              int id = box.isEmpty
-                                  ? 0
-                                  : box.values
-                                      .cast<Interview>()
-                                      .map((e) => e.id)
-                                      .reduce(max);
+                      onConfirmTapped: () {
+                        Box box = Hive.box('interviews');
+                        int id = box.isEmpty
+                            ? 0
+                            : box.values
+                                .cast<Interview>()
+                                .map((e) => e.id)
+                                .reduce(max);
 
-                              Interview interview = Interview(
-                                id: id + 1,
-                                title: _titleTextController.text,
-                              );
+                        Interview interview = Interview(
+                          id: id + 1,
+                          title: _titleTextController.text,
+                        );
 
-                              Hive.box('interviews').add(interview);
+                        Hive.box('interviews').add(interview);
 
-                              _titleTextController.clear();
-                              context.pop();
-                            }
-                          : null,
+                        _titleTextController.clear();
+                        context.pop();
+                      },
                     );
                   },
                 );
