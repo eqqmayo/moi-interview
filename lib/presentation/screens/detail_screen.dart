@@ -143,7 +143,12 @@ class _DetailScreenState extends State<DetailScreen> {
                       e.interviewId == widget.interview.id &&
                       e.isChecked == true)
                   .toList();
-              context.push('/interview', extra: questions);
+
+              if (questions.isEmpty) {
+                return;
+              } else {
+                context.push('/interview', extra: questions);
+              }
             },
           ),
         ],

@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive/hive.dart';
 import 'package:moi_interview/model/question.dart';
 import 'package:moi_interview/utils/color_styles.dart';
 
@@ -27,18 +29,15 @@ class _InterviewScreenState extends State<InterviewScreen> {
   void initState() {
     super.initState();
     _flutterTts = FlutterTts();
-    print(widget.questions[0].question);
     _startInterview();
   }
 
   Future<void> _startInterview() async {
-    print('start');
     while (_currentQuestionIndex < widget.questions.length) {
-      print('while');
       await _speakQuestion(widget.questions[_currentQuestionIndex].question);
-      await Future.delayed(const Duration(seconds: 3));
       await Future.delayed(Duration(
-          seconds: widget.questions[_currentQuestionIndex].answerTime));
+          minutes: widget.questions[_currentQuestionIndex].answerTime));
+      await Future.delayed(const Duration(seconds: 3));
       _currentQuestionIndex++;
     }
 
@@ -63,10 +62,12 @@ class _InterviewScreenState extends State<InterviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.white,
           image: DecorationImage(
-            image: AssetImage('assets/images/interviewer.jpg'),
+            image: Hive.box('user').get('imagePath') == null
+                ? const AssetImage('assets/images/interviewer.jpg')
+                : FileImage(File(Hive.box('user').get('imagePath'))),
             fit: BoxFit.contain,
           ),
         ),
@@ -77,13 +78,13 @@ class _InterviewScreenState extends State<InterviewScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            FloatingActionButton(
-              backgroundColor: ColorStyles.primary,
-              foregroundColor: ColorStyles.white,
-              onPressed: () {},
-              heroTag: 'previous',
-              child: const Icon(Icons.skip_previous),
-            ),
+            // FloatingActionButton(
+            //   backgroundColor: ColorStyles.primary,
+            //   foregroundColor: ColorStyles.white,
+            //   onPressed: () {},
+            //   heroTag: 'previous',
+            //   child: const Icon(Icons.skip_previous),
+            // ),
             FloatingActionButton(
               backgroundColor: ColorStyles.primary,
               foregroundColor: ColorStyles.white,
@@ -93,13 +94,13 @@ class _InterviewScreenState extends State<InterviewScreen> {
               heroTag: 'stop',
               child: const Icon(Icons.stop),
             ),
-            FloatingActionButton(
-              backgroundColor: ColorStyles.primary,
-              foregroundColor: ColorStyles.white,
-              onPressed: () {},
-              heroTag: 'next',
-              child: const Icon(Icons.skip_next),
-            ),
+            // FloatingActionButton(
+            //   backgroundColor: ColorStyles.primary,
+            //   foregroundColor: ColorStyles.white,
+            //   onPressed: () {},
+            //   heroTag: 'next',
+            //   child: const Icon(Icons.skip_next),
+            // ),
           ],
         ),
       ),

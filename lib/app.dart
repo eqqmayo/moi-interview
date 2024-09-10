@@ -11,6 +11,7 @@ class App extends StatelessWidget {
     SizeConfig().init(context);
 
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: router,
       theme: ThemeData(
         useMaterial3: true,

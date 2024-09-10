@@ -1,4 +1,4 @@
-package com.example.moi_interview
+package com.eqqmayo.moiinterview
 
 import io.flutter.embedding.android.FlutterActivity
 
