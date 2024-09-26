@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'question.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 2)
 class Question extends HiveObject {
   @HiveField(0)
   int interviewId;

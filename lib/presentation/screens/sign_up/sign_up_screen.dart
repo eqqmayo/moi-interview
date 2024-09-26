@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hive/hive.dart';
+import 'package:moi_interview/domain/model/user.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_text_field.dart';
+import 'package:moi_interview/presentation/screens/sign_up/sign_up_view_model.dart';
 import 'package:moi_interview/utils/color_styles.dart';
 import 'package:moi_interview/utils/text_styles.dart';
+import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -48,6 +50,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<SignUpViewModel>();
+
     return GestureDetector(
       onTap: _dismissKeyboard,
       child: Scaffold(
@@ -62,7 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 100),
+                        const SizedBox(height: 100),
                         RichText(
                           text: TextSpan(
                             children: [
@@ -79,13 +83,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 48),
+                        const SizedBox(height: 48),
                         DefaultTextField(
                           title: '이름',
                           placeholder: ' 이름 또는 닉네임을 입력해주세요',
                           controller: _nameTextController,
                         ),
-                        SizedBox(height: 24),
+                        const SizedBox(height: 24),
                         DefaultTextField(
                           title: '한마디',
                           placeholder: ' 나를 응원하는 한마디를 작성해보세요',
@@ -99,18 +103,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               DefaultButton(
                 title: '시작하기',
                 onPressed: _isButtonEnabled
-                    ? () async {
-                        try {
-                          final box = Hive.box('user');
-                          box.put('name', _nameTextController.text);
-                          box.put('word', _wordTextController.text);
+                    ? () {
+                        final user = User(
+                          name: _nameTextController.text,
+                          word: _wordTextController.text,
+                        );
 
-                          if (!mounted) return;
-
-                          context.go('/home');
-                        } catch (e) {
-                          print('failed to save data: $e');
-                        }
+                        viewModel.saveUser(user);
+                        context.go('/home');
                       }
                     : null,
               )
