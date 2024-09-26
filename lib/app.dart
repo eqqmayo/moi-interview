@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:moi_interview/router.dart';
+import 'package:moi_interview/config/router.dart';
 import 'package:moi_interview/utils/color_styles.dart';
-import 'package:moi_interview/utils/size_config.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: router,

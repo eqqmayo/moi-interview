@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
-import 'package:moi_interview/model/question.dart';
+import 'package:moi_interview/domain/model/question.dart';
 import 'package:moi_interview/utils/color_styles.dart';
 
 class InterviewScreen extends StatefulWidget {
@@ -47,9 +47,14 @@ class _InterviewScreenState extends State<InterviewScreen> {
   }
 
   Future<void> _speakQuestion(String question) async {
-    await _flutterTts.setLanguage("ko-KR");
-    await _flutterTts.setSpeechRate(0.5);
-    await _flutterTts.speak(question);
+    try {
+      await _flutterTts.setLanguage("ko-KR");
+      await _flutterTts.setPitch(1.5);
+      await _flutterTts.setSpeechRate(1.0);
+      await _flutterTts.speak(question);
+    } catch (e) {
+      print("Error speaking: $e");
+    }
   }
 
   @override

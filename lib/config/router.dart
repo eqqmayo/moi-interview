@@ -1,12 +1,12 @@
 import 'package:go_router/go_router.dart';
-import 'package:moi_interview/model/interview.dart';
-import 'package:moi_interview/model/question.dart';
-import 'package:moi_interview/presentation/screens/detail_screen.dart';
-import 'package:moi_interview/presentation/screens/home_screen.dart';
-import 'package:moi_interview/presentation/screens/interview_screen.dart';
-import 'package:moi_interview/presentation/screens/setting_screen.dart';
-import 'package:moi_interview/presentation/screens/sign_up_screen.dart';
-import 'package:moi_interview/presentation/screens/splash_screen.dart';
+import 'package:moi_interview/domain/model/interview.dart';
+import 'package:moi_interview/domain/model/question.dart';
+import 'package:moi_interview/presentation/screens/detail/detail_screen.dart';
+import 'package:moi_interview/presentation/screens/home/home_screen.dart';
+import 'package:moi_interview/presentation/screens/interview/interview_screen.dart';
+import 'package:moi_interview/presentation/screens/setting/setting_screen.dart';
+import 'package:moi_interview/presentation/screens/sign_up/sign_up_screen.dart';
+import 'package:moi_interview/presentation/screens/splash/splash_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/',

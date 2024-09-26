@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:moi_interview/model/interview.dart';
-import 'package:moi_interview/model/question.dart';
+import 'package:moi_interview/domain/model/interview.dart';
+import 'package:moi_interview/domain/model/question.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/question_modal.dart';
 import 'package:moi_interview/utils/color_styles.dart';

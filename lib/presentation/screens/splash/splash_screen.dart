@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:moi_interview/router.dart';
+import 'package:moi_interview/config/router.dart';
 import 'package:moi_interview/utils/color_styles.dart';
 
 class SplashScreen extends StatefulWidget {

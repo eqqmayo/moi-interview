@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_text_field.dart';
 import 'package:moi_interview/utils/color_styles.dart';
-import 'package:moi_interview/utils/size_config.dart';
 import 'package:moi_interview/utils/text_styles.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -96,22 +95,22 @@ class _SettingScreenState extends State<SettingScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: getHeight(40)),
+                        SizedBox(height: 40),
                         DefaultTextField(
                           title: '이름',
                           controller: _nameTextController,
                         ),
-                        SizedBox(height: getHeight(20)),
+                        SizedBox(height: 20),
                         DefaultTextField(
                           title: '한마디',
                           controller: _wordTextController,
                         ),
-                        SizedBox(height: getHeight(20)),
+                        SizedBox(height: 20),
                         const Text(
                           '함께할 면접관(선택)',
                           style: TextStyles.caption,
                         ),
-                        SizedBox(height: getHeight(20)),
+                        SizedBox(height: 20),
                         GestureDetector(
                           onTap: _pickImage,
                           child: Center(

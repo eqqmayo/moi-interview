@@ -4,7 +4,6 @@ import 'package:hive/hive.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_text_field.dart';
 import 'package:moi_interview/utils/color_styles.dart';
-import 'package:moi_interview/utils/size_config.dart';
 import 'package:moi_interview/utils/text_styles.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -63,7 +62,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: getHeight(100)),
+                        SizedBox(height: 100),
                         RichText(
                           text: TextSpan(
                             children: [
@@ -80,13 +79,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ],
                           ),
                         ),
-                        SizedBox(height: getHeight(48)),
+                        SizedBox(height: 48),
                         DefaultTextField(
                           title: '이름',
                           placeholder: ' 이름 또는 닉네임을 입력해주세요',
                           controller: _nameTextController,
                         ),
-                        SizedBox(height: getHeight(24)),
+                        SizedBox(height: 24),
                         DefaultTextField(
                           title: '한마디',
                           placeholder: ' 나를 응원하는 한마디를 작성해보세요',

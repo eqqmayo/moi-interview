@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:moi_interview/utils/color_styles.dart';
-import 'package:moi_interview/utils/size_config.dart';
 
 class DefaultButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -18,7 +17,7 @@ class DefaultButton extends StatelessWidget {
       padding: const EdgeInsets.all(20.0),
       child: SizedBox(
         width: double.infinity,
-        height: getHeight(56),
+        height: 56,
         child: TextButton(
           onPressed: onPressed,
           style: TextButton.styleFrom(

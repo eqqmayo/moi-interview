@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:moi_interview/utils/color_styles.dart';
-import 'package:moi_interview/utils/size_config.dart';
 import 'package:moi_interview/utils/text_styles.dart';
 
 class DefaultDialog extends StatefulWidget {
@@ -52,7 +51,7 @@ class _DefaultDialogState extends State<DefaultDialog> {
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: SizedBox(
-        width: getWidth(200),
+        width: 200,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(28.0, 28.0, 28.0, 12.0),
           child: Column(
@@ -63,7 +62,7 @@ class _DefaultDialogState extends State<DefaultDialog> {
                 widget.title,
                 style: TextStyles.subHeading,
               ),
-              SizedBox(height: getHeight(8.0)),
+              SizedBox(height: 8),
               TextField(
                 cursorColor: ColorStyles.black,
                 cursorWidth: 1.0,
