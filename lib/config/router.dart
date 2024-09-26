@@ -16,7 +16,10 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const SplashScreen(),
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => getIt<SignUpViewModel>(),
+        child: const SplashScreen(),
+      ),
     ),
     GoRoute(
       path: '/sign_up',

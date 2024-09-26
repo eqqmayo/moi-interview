@@ -33,6 +33,7 @@ migrate_working_dir/
 *.lock
 *.g.dart
 .metadata
+*.freezed.dart
 
 # Symbolication related
 app.*.symbols

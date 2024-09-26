@@ -7,7 +7,13 @@ class UserRepositoryImpl implements UserRepository {
 
   UserRepositoryImpl(this._userDataSource);
 
+  @override
   void createUser(User user) {
     _userDataSource.createUser(user);
+  }
+
+  @override
+  User? getUser() {
+    return _userDataSource.getUser();
   }
 }

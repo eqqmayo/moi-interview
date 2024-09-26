@@ -19,8 +19,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _nameTextController = TextEditingController();
   final _wordTextController = TextEditingController();
 
-  bool _isButtonEnabled = false;
-
   @override
   void initState() {
     super.initState();
@@ -29,10 +27,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void _onTextChanged() {
-    setState(() {
-      _isButtonEnabled = _nameTextController.text.trim().isNotEmpty &&
-          _wordTextController.text.trim().isNotEmpty;
-    });
+    final viewModel = context.read<SignUpViewModel>();
+    viewModel.validateInputs(
+        _nameTextController.text, _wordTextController.text);
   }
 
   void _dismissKeyboard() {
@@ -102,7 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               DefaultButton(
                 title: '시작하기',
-                onPressed: _isButtonEnabled
+                onPressed: viewModel.state.isButtonEnabled
                     ? () {
                         final user = User(
                           name: _nameTextController.text,

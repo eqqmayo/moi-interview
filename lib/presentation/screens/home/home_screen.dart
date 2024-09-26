@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:moi_interview/domain/model/interview.dart';
+import 'package:moi_interview/domain/model/user.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_dialog.dart';
 import 'package:moi_interview/utils/color_styles.dart';
@@ -50,8 +51,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ValueListenableBuilder(
                   valueListenable: Hive.box('user').listenable(),
                   builder: (context, Box box, widget) {
-                    final String name = box.get('name');
-                    final String word = box.get('word');
+                    final User user = box.get('user');
+                    final String name = user.name;
+                    final String word = user.word;
 
                     return RichText(
                       text: TextSpan(
