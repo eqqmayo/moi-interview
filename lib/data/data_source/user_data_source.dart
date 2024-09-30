@@ -8,8 +8,8 @@ class UserDataSource {
     box.put('user', user);
   }
 
-  User? getUser() {
-    User? user = Hive.box('user').get('user');
+  User getUser() {
+    User user = Hive.box('user').get('user');
     return user;
   }
 

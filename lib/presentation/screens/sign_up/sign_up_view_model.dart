@@ -11,18 +11,15 @@ class SignUpViewModel with ChangeNotifier {
 
   SignUpViewModel(this._userRepository);
 
-  void validateInputs(String name, String word) {
+  void saveUser(User user) {
+    _userRepository.createUser(user);
+    _state = state.copyWith(user: user);
+    notifyListeners();
+  }
+
+  void updateButtonState(String name, String word) {
     final isButtonEnabled = name.trim().isNotEmpty && word.trim().isNotEmpty;
     _state = state.copyWith(isButtonEnabled: isButtonEnabled);
     notifyListeners();
-  }
-
-  void saveUser(User user) {
-    _userRepository.createUser(user);
-    notifyListeners();
-  }
-
-  User? getUser() {
-    return _userRepository.getUser();
   }
 }

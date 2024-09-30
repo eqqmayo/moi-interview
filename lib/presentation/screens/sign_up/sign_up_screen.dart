@@ -28,7 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void _onTextChanged() {
     final viewModel = context.read<SignUpViewModel>();
-    viewModel.validateInputs(
+    viewModel.updateButtonState(
         _nameTextController.text, _wordTextController.text);
   }
 

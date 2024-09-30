@@ -8,6 +8,7 @@ import 'package:moi_interview/data/repository/user_repository_impl.dart';
 import 'package:moi_interview/domain/repository/interview_repository.dart';
 import 'package:moi_interview/domain/repository/question_repository.dart';
 import 'package:moi_interview/domain/repository/user_repository.dart';
+import 'package:moi_interview/presentation/screens/setting/setting_view_model.dart';
 import 'package:moi_interview/presentation/screens/sign_up/sign_up_view_model.dart';
 
 final getIt = GetIt.instance;
@@ -24,4 +25,5 @@ void diSetup() {
   getIt.registerSingleton<QuestionRepository>(QuestionRepositoryImpl(getIt()));
 
   getIt.registerFactory(() => SignUpViewModel(getIt()));
+  getIt.registerFactory(() => SettingViewModel(getIt()));
 }

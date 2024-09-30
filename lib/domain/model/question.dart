@@ -5,13 +5,13 @@ part 'question.g.dart';
 @HiveType(typeId: 2)
 class Question extends HiveObject {
   @HiveField(0)
-  int interviewId;
+  final int interviewId;
 
   @HiveField(1)
-  String question;
+  final String question;
 
   @HiveField(2)
-  int answerTime;
+  final int answerTime;
 
   @HiveField(3)
   bool isChecked;

@@ -6,6 +6,7 @@ import 'package:moi_interview/presentation/screens/detail/detail_screen.dart';
 import 'package:moi_interview/presentation/screens/home/home_screen.dart';
 import 'package:moi_interview/presentation/screens/interview/interview_screen.dart';
 import 'package:moi_interview/presentation/screens/setting/setting_screen.dart';
+import 'package:moi_interview/presentation/screens/setting/setting_view_model.dart';
 import 'package:moi_interview/presentation/screens/sign_up/sign_up_screen.dart';
 import 'package:moi_interview/presentation/screens/sign_up/sign_up_view_model.dart';
 import 'package:moi_interview/presentation/screens/splash/splash_screen.dart';
@@ -16,10 +17,7 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => ChangeNotifierProvider(
-        create: (context) => getIt<SignUpViewModel>(),
-        child: const SplashScreen(),
-      ),
+      builder: (context, state) => const SplashScreen(),
     ),
     GoRoute(
       path: '/sign_up',
@@ -47,7 +45,10 @@ final router = GoRouter(
         }),
     GoRoute(
       path: '/setting',
-      builder: (context, state) => const SettingScreen(),
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => getIt<SettingViewModel>(),
+        child: const SettingScreen(),
+      ),
     )
   ],
 );

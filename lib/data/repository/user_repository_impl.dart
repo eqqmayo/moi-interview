@@ -13,7 +13,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  User? getUser() {
+  User getUser() {
     return _userDataSource.getUser();
   }
 }

@@ -1,12 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:moi_interview/domain/model/user.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_text_field.dart';
+import 'package:moi_interview/presentation/screens/setting/setting_view_model.dart';
 import 'package:moi_interview/utils/color_styles.dart';
 import 'package:moi_interview/utils/text_styles.dart';
+import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -16,30 +18,33 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  final TextEditingController _nameTextController =
-      TextEditingController(text: Hive.box('user').get('name'));
-  final TextEditingController _wordTextController =
-      TextEditingController(text: Hive.box('user').get('word'));
+  late final TextEditingController _nameTextController;
+  late final TextEditingController _wordTextController;
 
-  String? _imagePath = Hive.box('user').get('imagePath');
-
-  bool _isButtonEnabled = false;
+  String? _imagePath;
 
   @override
   void initState() {
     super.initState();
+    final viewModel = context.read<SettingViewModel>();
+
+    _nameTextController =
+        TextEditingController(text: viewModel.state.user!.name);
+    _wordTextController =
+        TextEditingController(text: viewModel.state.user!.word);
+
     _nameTextController.addListener(_onTextChanged);
     _wordTextController.addListener(_onTextChanged);
   }
 
   void _onTextChanged() {
-    setState(() {
-      _isButtonEnabled = _nameTextController.text.trim().isNotEmpty &&
-              _wordTextController.text.trim().isNotEmpty &&
-              (_nameTextController.text != Hive.box('user').get('name') ||
-                  _wordTextController.text != Hive.box('user').get('word')) ||
-          _imagePath != Hive.box('user').get('imagePath');
-    });
+    final viewModel = context.read<SettingViewModel>();
+
+    viewModel.updateButtonState(
+      name: _nameTextController.text,
+      word: _wordTextController.text,
+      imagePath: _imagePath,
+    );
   }
 
   @override
@@ -60,15 +65,17 @@ class _SettingScreenState extends State<SettingScreen> {
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
-      setState(() {
-        _imagePath = image.path;
-        _isButtonEnabled = (_imagePath != Hive.box('user').get('imagePath'));
-      });
+      _imagePath = image.path;
+
+      final viewModel = context.read<SettingViewModel>();
+      viewModel.updateButtonState(imagePath: image.path);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<SettingViewModel>();
+
     return GestureDetector(
       onTap: _dismissKeyboard,
       child: Scaffold(
@@ -95,36 +102,51 @@ class _SettingScreenState extends State<SettingScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 40),
+                        const SizedBox(height: 40),
                         DefaultTextField(
                           title: '이름',
                           controller: _nameTextController,
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         DefaultTextField(
                           title: '한마디',
                           controller: _wordTextController,
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         const Text(
                           '함께할 면접관(선택)',
                           style: TextStyles.caption,
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         GestureDetector(
                           onTap: _pickImage,
                           child: Center(
-                            child: _imagePath == null
-                                ? Image.asset(
-                                    'assets/images/interviewer.jpg',
-                                    width: 400,
-                                    height: 400,
-                                  )
-                                : Image.file(
+                            child: Builder(
+                              builder: (context) {
+                                if (_imagePath != null) {
+                                  return Image.file(
                                     File(_imagePath!),
                                     width: 400,
                                     height: 400,
-                                  ),
+                                  );
+                                } else if (viewModel
+                                        .state.user!.interviewerImgPath !=
+                                    null) {
+                                  return Image.file(
+                                    File(viewModel
+                                        .state.user!.interviewerImgPath!),
+                                    width: 400,
+                                    height: 400,
+                                  );
+                                } else {
+                                  return Image.asset(
+                                    'assets/images/default_image.png',
+                                    width: 400,
+                                    height: 400,
+                                  );
+                                }
+                              },
+                            ),
                           ),
                         ),
                       ],
@@ -134,20 +156,19 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
               DefaultButton(
                 title: '저장하기',
-                onPressed: _isButtonEnabled
-                    ? () async {
-                        try {
-                          final box = Hive.box('user');
-                          box.put('name', _nameTextController.text);
-                          box.put('word', _wordTextController.text);
-                          box.put('imagePath', _imagePath);
-
-                          setState(() {
-                            _isButtonEnabled = false;
-                          });
-                        } catch (e) {
-                          print('failed to save data: $e');
-                        }
+                onPressed: viewModel.state.isButtonEnabled
+                    ? () {
+                        final user = User(
+                          name: _nameTextController.text,
+                          word: _wordTextController.text,
+                          interviewerImgPath: _imagePath,
+                        );
+                        viewModel.saveUser(user);
+                        viewModel.updateButtonState(
+                          name: _nameTextController.text,
+                          word: _wordTextController.text,
+                          imagePath: _imagePath,
+                        );
                       }
                     : null,
               )
