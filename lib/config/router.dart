@@ -2,8 +2,10 @@ import 'package:go_router/go_router.dart';
 import 'package:moi_interview/config/di.dart';
 import 'package:moi_interview/domain/model/interview.dart';
 import 'package:moi_interview/domain/model/question.dart';
+import 'package:moi_interview/domain/model/user.dart';
 import 'package:moi_interview/presentation/screens/detail/detail_screen.dart';
 import 'package:moi_interview/presentation/screens/home/home_screen.dart';
+import 'package:moi_interview/presentation/screens/home/home_view_model.dart';
 import 'package:moi_interview/presentation/screens/interview/interview_screen.dart';
 import 'package:moi_interview/presentation/screens/setting/setting_screen.dart';
 import 'package:moi_interview/presentation/screens/setting/setting_view_model.dart';
@@ -28,7 +30,10 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/home',
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (context) => getIt<HomeViewModel>(),
+        child: HomeScreen(),
+      ),
     ),
     GoRoute(
       path: '/detail',

@@ -10,10 +10,10 @@ class SettingViewModel with ChangeNotifier {
   SettingUiState get state => _state;
 
   SettingViewModel(this._userRepository) {
-    _initializeUser();
+    getUser();
   }
 
-  void _initializeUser() {
+  void getUser() {
     final user = _userRepository.getUser();
     _state = state.copyWith(user: user);
     notifyListeners();
@@ -21,14 +21,7 @@ class SettingViewModel with ChangeNotifier {
 
   void saveUser(User user) {
     _userRepository.createUser(user);
-    _state = state.copyWith(user: user);
-    notifyListeners();
-  }
-
-  void updateUser({String? name, String? word, String? imagePath}) {
-    final user = state.user!.copyWith(interviewerImgPath: imagePath);
-    _state = state.copyWith(user: user);
-    _userRepository.createUser(user);
+    _state = state.copyWith(user: user, isButtonEnabled: false);
     notifyListeners();
   }
 

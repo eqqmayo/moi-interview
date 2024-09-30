@@ -2,13 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:moi_interview/domain/model/interview.dart';
-import 'package:moi_interview/domain/model/user.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_dialog.dart';
+import 'package:moi_interview/presentation/screens/home/home_view_model.dart';
 import 'package:moi_interview/utils/color_styles.dart';
 import 'package:moi_interview/utils/text_styles.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,6 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<HomeViewModel>();
+
     return Scaffold(
       backgroundColor: ColorStyles.white,
       appBar: AppBar(
@@ -35,11 +37,14 @@ class _HomeScreenState extends State<HomeScreen> {
         toolbarHeight: 40.0,
         actions: [
           IconButton(
-            onPressed: () {
-              context.push('/setting');
+            onPressed: () async {
+              final result = await context.push('/setting');
+              if (result == true) {
+                viewModel.getUser();
+              }
             },
             icon: const Icon(Icons.settings_outlined),
-          )
+          ),
         ],
       ),
       body: SafeArea(
@@ -48,41 +53,32 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 24.0),
-              child: ValueListenableBuilder(
-                  valueListenable: Hive.box('user').listenable(),
-                  builder: (context, Box box, widget) {
-                    final User user = box.get('user');
-                    final String name = user.name;
-                    final String word = user.word;
-
-                    return RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: name,
-                            style: TextStyles.colorHeading,
-                          ),
-                          const TextSpan(
-                            text: '님의 면접\n',
-                            style: TextStyles.heading,
-                          ),
-                          TextSpan(
-                            text: word,
-                            style: TextStyles.heading,
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: viewModel.state.user!.name,
+                      style: TextStyles.colorHeading,
+                    ),
+                    const TextSpan(
+                      text: '님의 면접\n',
+                      style: TextStyles.heading,
+                    ),
+                    TextSpan(
+                      text: viewModel.state.user!.word,
+                      style: TextStyles.heading,
+                    ),
+                  ],
+                ),
+              ),
             ),
             const Divider(color: ColorStyles.gray5, thickness: 16),
             const SizedBox(height: 8.0),
             Expanded(
-              child: ValueListenableBuilder(
-                valueListenable: Hive.box('interviews').listenable(),
-                builder: (context, Box box, widget) {
+              child: Builder(
+                builder: (context) {
                   final List<String> interviews =
-                      box.values.map((e) => e.title as String).toList();
+                      viewModel.state.interviews.map((e) => e.title).toList();
 
                   return ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -105,8 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: ColorStyles.gray2,
                         ),
                         onTap: () {
-                          Interview interview =
-                              Hive.box('interviews').getAt(index);
+                          final interview = viewModel.state.interviews[index];
                           context.push('/detail', extra: interview);
                         },
                       );
@@ -122,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   context: context,
                   builder: (context) {
                     return DefaultDialog(
-                      title: '제목 입력',
+                      title: '면접 등록',
                       placeholder: ' 제목을 입력하세요',
                       controller: _titleTextController,
                       onCancelTapped: () {
@@ -130,20 +125,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         context.pop();
                       },
                       onConfirmTapped: () {
-                        Box box = Hive.box('interviews');
-                        int id = box.isEmpty
+                        final interviews = viewModel.state.interviews;
+                        int id = interviews.isEmpty
                             ? 0
-                            : box.values
-                                .cast<Interview>()
-                                .map((e) => e.id)
-                                .reduce(max);
+                            : interviews.map((e) => e.id).reduce(max);
 
                         Interview interview = Interview(
                           id: id + 1,
                           title: _titleTextController.text,
                         );
-
-                        Hive.box('interviews').add(interview);
+                        viewModel.addInterview(interview);
 
                         _titleTextController.clear();
                         context.pop();

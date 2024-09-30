@@ -20,27 +20,26 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   late final TextEditingController _nameTextController;
   late final TextEditingController _wordTextController;
+  late final SettingViewModel _viewModel;
 
   String? _imagePath;
 
   @override
   void initState() {
     super.initState();
-    final viewModel = context.read<SettingViewModel>();
+    _viewModel = context.read<SettingViewModel>();
 
     _nameTextController =
-        TextEditingController(text: viewModel.state.user!.name);
+        TextEditingController(text: _viewModel.state.user!.name);
     _wordTextController =
-        TextEditingController(text: viewModel.state.user!.word);
+        TextEditingController(text: _viewModel.state.user!.word);
 
     _nameTextController.addListener(_onTextChanged);
     _wordTextController.addListener(_onTextChanged);
   }
 
   void _onTextChanged() {
-    final viewModel = context.read<SettingViewModel>();
-
-    viewModel.updateButtonState(
+    _viewModel.updateButtonState(
       name: _nameTextController.text,
       word: _wordTextController.text,
       imagePath: _imagePath,
@@ -66,9 +65,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
     if (image != null) {
       _imagePath = image.path;
-
-      final viewModel = context.read<SettingViewModel>();
-      viewModel.updateButtonState(imagePath: image.path);
+      _viewModel.updateButtonState(imagePath: image.path);
     }
   }
 
@@ -86,7 +83,7 @@ class _SettingScreenState extends State<SettingScreen> {
             icon: const Icon(Icons.arrow_back_ios),
             iconSize: 22,
             onPressed: () {
-              context.pop();
+              context.pop(true);
             },
           ),
           title: const Text('설정', style: TextStyles.heading2),
@@ -140,7 +137,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   );
                                 } else {
                                   return Image.asset(
-                                    'assets/images/default_image.png',
+                                    'assets/images/interviewer.jpg',
                                     width: 400,
                                     height: 400,
                                   );
@@ -164,11 +161,6 @@ class _SettingScreenState extends State<SettingScreen> {
                           interviewerImgPath: _imagePath,
                         );
                         viewModel.saveUser(user);
-                        viewModel.updateButtonState(
-                          name: _nameTextController.text,
-                          word: _wordTextController.text,
-                          imagePath: _imagePath,
-                        );
                       }
                     : null,
               )
