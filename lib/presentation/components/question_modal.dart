@@ -34,6 +34,7 @@ class QuestionModal extends StatelessWidget {
             const SizedBox(height: 4),
             TextFormField(
               controller: controller,
+
               cursorColor: ColorStyles.black,
               cursorWidth: 1.0,
               decoration: InputDecoration(

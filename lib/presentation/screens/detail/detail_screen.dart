@@ -1,12 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:moi_interview/domain/model/interview.dart';
 import 'package:moi_interview/domain/model/question.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/question_modal.dart';
+import 'package:moi_interview/presentation/screens/detail/detail_view_model.dart';
 import 'package:moi_interview/utils/color_styles.dart';
 import 'package:moi_interview/utils/text_styles.dart';
+import 'package:provider/provider.dart';
 
 class DetailScreen extends StatefulWidget {
   final Interview interview;
@@ -22,10 +25,20 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   final TextEditingController _questionTextController = TextEditingController();
-  int _answerTime = 3;
+
+  @override
+  void initState() {
+    Future.microtask(() {
+      final viewModel = context.read<DetailViewModel>();
+      viewModel.getQuestionsByInterviewId(widget.interview.id);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<DetailViewModel>();
+
     return Scaffold(
       backgroundColor: ColorStyles.white,
       appBar: AppBar(
@@ -52,27 +65,33 @@ class _DetailScreenState extends State<DetailScreen> {
                       child: SingleChildScrollView(
                         child: QuestionModal(
                           onSelectedItemChanged: (index) {
-                            setState(() {
-                              _answerTime = index + 1;
-                            });
+                            viewModel.setAnswerTime(index + 1);
                           },
                           controller: _questionTextController,
                           onCancelTapped: () {
+                            viewModel.setAnswerTime(3);
                             _questionTextController.clear();
-                            _answerTime = 2;
                             context.pop();
                           },
                           onConfirmTapped: () {
+                            viewModel
+                                .getQuestionsByInterviewId(widget.interview.id);
+
+                            final questions = viewModel.state.questions;
+                            int id = questions.isEmpty
+                                ? 0
+                                : questions.map((e) => e.id).reduce(max);
+
                             Question question = Question(
+                              id: id + 1,
                               interviewId: widget.interview.id,
                               question: _questionTextController.text,
-                              answerTime: _answerTime,
+                              answerTime: viewModel.state.answerTime,
                             );
 
-                            Hive.box('questions').add(question);
-
+                            viewModel.addQuestion(question);
+                            viewModel.setAnswerTime(3);
                             _questionTextController.clear();
-                            _answerTime = 2;
                             context.pop();
                           },
                         ),
@@ -88,47 +107,34 @@ class _DetailScreenState extends State<DetailScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ValueListenableBuilder(
-              valueListenable: Hive.box('questions').listenable(),
-              builder: (context, Box box, _) {
-                final List<Question> questions = Hive.box('questions')
-                    .values
-                    .cast<Question>()
-                    .where((e) => e.interviewId == widget.interview.id)
-                    .toList();
+            child: ListView.builder(
+              itemCount: viewModel.state.questions.length,
+              itemBuilder: (context, index) {
+                final question = viewModel.state.questions[index];
 
-                return ListView.builder(
-                  itemCount: questions.length,
-                  itemBuilder: (context, index) {
-                    final question = questions[index];
-
-                    return ListTile(
-                      contentPadding: const EdgeInsets.all(8.0),
-                      leading: Checkbox(
-                        activeColor: ColorStyles.primary,
-                        value: question.isChecked,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            question.isChecked = !question.isChecked;
-                          });
-                        },
+                return ListTile(
+                  contentPadding: const EdgeInsets.all(8.0),
+                  leading: Checkbox(
+                    activeColor: ColorStyles.primary,
+                    value: question.isChecked,
+                    onChanged: (bool? value) {
+                      viewModel.updateCheckState(question);
+                    },
+                  ),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        question.question,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            question.question,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 4.0),
-                          Text(
-                            '${question.answerTime}분',
-                            style: const TextStyle(color: Colors.grey),
-                          ),
-                        ],
+                      const SizedBox(height: 4.0),
+                      Text(
+                        '${question.answerTime}분',
+                        style: const TextStyle(color: Colors.grey),
                       ),
-                    );
-                  },
+                    ],
+                  ),
                 );
               },
             ),
@@ -136,12 +142,8 @@ class _DetailScreenState extends State<DetailScreen> {
           DefaultButton(
             title: '시작하기',
             onPressed: () {
-              final List<Question> questions = Hive.box('questions')
-                  .values
-                  .cast<Question>()
-                  .where((e) =>
-                      e.interviewId == widget.interview.id &&
-                      e.isChecked == true)
+              final questions = viewModel.state.questions
+                  .where((e) => e.isChecked == true)
                   .toList();
 
               if (questions.isEmpty) {
