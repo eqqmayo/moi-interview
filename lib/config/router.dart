@@ -2,7 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:moi_interview/config/di.dart';
 import 'package:moi_interview/domain/model/interview.dart';
 import 'package:moi_interview/domain/model/question.dart';
-import 'package:moi_interview/domain/model/user.dart';
 import 'package:moi_interview/presentation/screens/detail/detail_screen.dart';
 import 'package:moi_interview/presentation/screens/detail/detail_view_model.dart';
 import 'package:moi_interview/presentation/screens/home/home_screen.dart';

@@ -74,10 +74,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             context.pop();
                           },
                           onConfirmTapped: () {
-                            viewModel
-                                .getQuestionsByInterviewId(widget.interview.id);
-
-                            final questions = viewModel.state.questions;
+                            final questions = viewModel.getAllQuestions();
                             int id = questions.isEmpty
                                 ? 0
                                 : questions.map((e) => e.id).reduce(max);
@@ -125,7 +122,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        question.question,
+                        '${question.question}${question.id}',
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 4.0),

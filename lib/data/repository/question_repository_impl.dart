@@ -17,6 +17,7 @@ class QuestionRepositoryImpl implements QuestionRepository {
     _questionDataSource.addQuestion(question);
   }
 
+  @override
   void updateQuestion(Question updatedQuestion) {
     _questionDataSource.updateQuestion(updatedQuestion);
   }

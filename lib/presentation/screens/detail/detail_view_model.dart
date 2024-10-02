@@ -11,10 +11,11 @@ class DetailViewModel with ChangeNotifier {
 
   DetailViewModel(this._questionRepository);
 
-  void getQuestionsByInterviewId(int id) {
-    final allQuestions = _questionRepository.getQuestions();
-    final questions =
-        allQuestions.where((quesiton) => quesiton.interviewId == id).toList();
+  void getQuestionsByInterviewId(int interviewId) {
+    final allQuestions = getAllQuestions();
+    final questions = allQuestions
+        .where((quesiton) => quesiton.interviewId == interviewId)
+        .toList();
     _state = state.copyWith(questions: questions);
     notifyListeners();
   }
@@ -27,11 +28,21 @@ class DetailViewModel with ChangeNotifier {
   void updateCheckState(Question question) {
     final updatedQuestion = question.copyWith(isChecked: !question.isChecked);
     _questionRepository.updateQuestion(updatedQuestion);
-    getQuestionsByInterviewId(question.interviewId);
+    final updatedQuestions = state.questions
+        .map((question) =>
+            question.id == updatedQuestion.id ? updatedQuestion : question)
+        .toList();
+
+    _state = state.copyWith(questions: updatedQuestions);
+    notifyListeners();
   }
 
   void setAnswerTime(int time) {
     _state = state.copyWith(answerTime: time);
     notifyListeners();
+  }
+
+  List<Question> getAllQuestions() {
+    return _questionRepository.getQuestions();
   }
 }
