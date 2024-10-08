@@ -8,6 +8,10 @@ class InterviewDataSource {
   }
 
   void addInterview(Interview interview) {
-    Hive.box('interviews').add(interview);
+    Hive.box('interviews').put(interview.id, interview);
+  }
+
+  void deleteInterview(int interviewId) {
+    Hive.box('interviews').delete(interviewId);
   }
 }

@@ -12,6 +12,4 @@ class UserDataSource {
     User user = Hive.box('user').get('user');
     return user;
   }
-
-  void updateUser() {}
 }

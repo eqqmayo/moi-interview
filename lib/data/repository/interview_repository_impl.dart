@@ -16,4 +16,9 @@ class InterviewRepositoryImpl implements InterviewRepository {
   void addInterview(Interview interview) {
     _interviewDataSource.addInterview(interview);
   }
+
+  @override
+  void deleteInterview(int interviewId) {
+    _interviewDataSource.deleteInterview(interviewId);
+  }
 }

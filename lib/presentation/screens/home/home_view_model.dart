@@ -35,4 +35,14 @@ class HomeViewModel with ChangeNotifier {
     _interviewRepository.addInterview(interview);
     getInterviews();
   }
+
+  void deleteInterview(int interviewId) {
+    _interviewRepository.deleteInterview(interviewId);
+    _state = state.copyWith(
+      interviews: state.interviews
+          .where((interview) => interview.id != interviewId)
+          .toList(),
+    );
+    notifyListeners();
+  }
 }

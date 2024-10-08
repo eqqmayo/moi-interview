@@ -4,4 +4,6 @@ abstract interface class InterviewRepository {
   List<Interview> getInterviews();
 
   void addInterview(Interview interview);
+
+  void deleteInterview(int interviewId);
 }

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moi_interview/domain/model/interview.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
@@ -73,49 +74,70 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const Divider(color: ColorStyles.gray5, thickness: 16),
-            const SizedBox(height: 8.0),
             Expanded(
               child: Builder(
                 builder: (context) {
-                  final List<String> interviews =
-                      viewModel.state.interviews.map((e) => e.title).toList();
+                  final List<Interview> interviews = viewModel.state.interviews;
+                  final List<String> titles =
+                      interviews.map((e) => e.title).toList();
 
-                  return interviews.isEmpty
+                  return titles.isEmpty
                       ? Center(
                           child: Text(
                           '면접을 추가하고 준비를 시작해보세요',
                           style: TextStyles.body2.copyWith(color: Colors.grey),
                         ))
                       : ListView.separated(
-                          padding: const EdgeInsets.symmetric(horizontal: 24.0),
                           itemCount: interviews.length,
                           separatorBuilder: (context, index) => const Divider(
                             color: ColorStyles.gray5,
                             thickness: 1,
+                            height: 1,
                           ),
                           itemBuilder: (context, index) {
-                            return Theme(
-                              data: ThemeData(
-                                splashColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
+                            return Slidable(
+                              key: Key(titles[index]),
+                              endActionPane: ActionPane(
+                                motion: const ScrollMotion(),
+                                extentRatio: 0.2,
+                                children: [
+                                  SlidableAction(
+                                    onPressed: (context) {
+                                      viewModel.deleteInterview(
+                                          interviews[index].id);
+                                    },
+                                    backgroundColor: const Color(0xFFFE4A49),
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.delete,
+                                    label: '삭제',
+                                  ),
+                                ],
                               ),
-                              child: ListTile(
-                                title: Text(
-                                  interviews[index],
-                                  style: TextStyles.body.copyWith(fontSize: 18),
+                              child: Theme(
+                                data: ThemeData(
+                                  splashColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
                                 ),
-                                contentPadding: const EdgeInsets.all(6.0),
-                                dense: false,
-                                trailing: const Icon(
-                                  Icons.arrow_forward_ios,
-                                  size: 14,
-                                  color: ColorStyles.gray2,
+                                child: ListTile(
+                                  title: Text(
+                                    titles[index],
+                                    style:
+                                        TextStyles.body.copyWith(fontSize: 18),
+                                  ),
+                                  contentPadding:
+                                      const EdgeInsets.fromLTRB(25, 15, 25, 15),
+                                  dense: false,
+                                  trailing: const Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 14,
+                                    color: ColorStyles.gray2,
+                                  ),
+                                  onTap: () {
+                                    final interview =
+                                        viewModel.state.interviews[index];
+                                    context.push('/detail', extra: interview);
+                                  },
                                 ),
-                                onTap: () {
-                                  final interview =
-                                      viewModel.state.interviews[index];
-                                  context.push('/detail', extra: interview);
-                                },
                               ),
                             );
                           },
