@@ -80,33 +80,46 @@ class _HomeScreenState extends State<HomeScreen> {
                   final List<String> interviews =
                       viewModel.state.interviews.map((e) => e.title).toList();
 
-                  return ListView.separated(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    itemCount: interviews.length,
-                    separatorBuilder: (context, index) => const Divider(
-                      color: ColorStyles.gray5,
-                      thickness: 1,
-                    ),
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(
-                          interviews[index],
-                          style: TextStyles.body.copyWith(fontSize: 18),
-                        ),
-                        contentPadding: const EdgeInsets.all(6.0),
-                        dense: false,
-                        trailing: const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 14,
-                          color: ColorStyles.gray2,
-                        ),
-                        onTap: () {
-                          final interview = viewModel.state.interviews[index];
-                          context.push('/detail', extra: interview);
-                        },
-                      );
-                    },
-                  );
+                  return interviews.isEmpty
+                      ? Center(
+                          child: Text(
+                          '면접을 추가하고 준비를 시작해보세요',
+                          style: TextStyles.body2.copyWith(color: Colors.grey),
+                        ))
+                      : ListView.separated(
+                          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                          itemCount: interviews.length,
+                          separatorBuilder: (context, index) => const Divider(
+                            color: ColorStyles.gray5,
+                            thickness: 1,
+                          ),
+                          itemBuilder: (context, index) {
+                            return Theme(
+                              data: ThemeData(
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  interviews[index],
+                                  style: TextStyles.body.copyWith(fontSize: 18),
+                                ),
+                                contentPadding: const EdgeInsets.all(6.0),
+                                dense: false,
+                                trailing: const Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 14,
+                                  color: ColorStyles.gray2,
+                                ),
+                                onTap: () {
+                                  final interview =
+                                      viewModel.state.interviews[index];
+                                  context.push('/detail', extra: interview);
+                                },
+                              ),
+                            );
+                          },
+                        );
                 },
               ),
             ),

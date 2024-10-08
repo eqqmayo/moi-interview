@@ -10,6 +10,7 @@ import 'package:moi_interview/domain/repository/question_repository.dart';
 import 'package:moi_interview/domain/repository/user_repository.dart';
 import 'package:moi_interview/presentation/screens/detail/detail_view_model.dart';
 import 'package:moi_interview/presentation/screens/home/home_view_model.dart';
+import 'package:moi_interview/presentation/screens/interview/interview_view_model.dart';
 import 'package:moi_interview/presentation/screens/setting/setting_view_model.dart';
 import 'package:moi_interview/presentation/screens/sign_up/sign_up_view_model.dart';
 

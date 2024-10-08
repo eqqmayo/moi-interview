@@ -7,6 +7,7 @@ import 'package:moi_interview/presentation/screens/detail/detail_view_model.dart
 import 'package:moi_interview/presentation/screens/home/home_screen.dart';
 import 'package:moi_interview/presentation/screens/home/home_view_model.dart';
 import 'package:moi_interview/presentation/screens/interview/interview_screen.dart';
+import 'package:moi_interview/presentation/screens/interview/interview_view_model.dart';
 import 'package:moi_interview/presentation/screens/setting/setting_screen.dart';
 import 'package:moi_interview/presentation/screens/setting/setting_view_model.dart';
 import 'package:moi_interview/presentation/screens/sign_up/sign_up_screen.dart';
@@ -46,11 +47,15 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-        path: '/interview',
-        builder: (context, state) {
-          final questions = state.extra as List<Question>;
-          return InterviewScreen(questions: questions);
-        }),
+      path: '/interview',
+      builder: (context, state) {
+        final questions = state.extra as List<Question>;
+        return ChangeNotifierProvider(
+          create: (context) => getIt<InterviewViewModel>(),
+          child: InterviewScreen(questions: questions),
+        );
+      },
+    ),
     GoRoute(
       path: '/setting',
       builder: (context, state) => ChangeNotifierProvider(
