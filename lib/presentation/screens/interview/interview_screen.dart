@@ -6,7 +6,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:moi_interview/domain/model/question.dart';
-import 'package:moi_interview/utils/color_styles.dart';
+import 'package:moi_interview/ui/styles/color_styles.dart';
 
 class InterviewScreen extends StatefulWidget {
   final List<Question> questions;
@@ -91,8 +91,8 @@ class _InterviewScreenState extends State<InterviewScreen> {
             //   child: const Icon(Icons.skip_previous),
             // ),
             FloatingActionButton(
-              backgroundColor: ColorStyles.primary,
-              foregroundColor: ColorStyles.white,
+              backgroundColor: ColorStyles.primary(context),
+              foregroundColor: ColorStyles.white(context),
               onPressed: () {
                 context.pop();
               },

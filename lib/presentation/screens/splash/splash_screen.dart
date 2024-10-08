@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:moi_interview/config/router.dart';
-import 'package:moi_interview/utils/color_styles.dart';
+import 'package:moi_interview/ui/styles/color_styles.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,13 +23,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: ColorStyles.primary,
+    return Scaffold(
+      backgroundColor: ColorStyles.primary(context),
       body: Center(
         child: Text(
           '모의\n면접',
           style: TextStyle(
-            color: ColorStyles.white,
+            color: ColorStyles.white(context),
             fontSize: 50,
             fontWeight: FontWeight.w800,
             letterSpacing: 2.0,

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:moi_interview/utils/color_styles.dart';
-import 'package:moi_interview/utils/text_styles.dart';
+import 'package:moi_interview/ui/styles/color_styles.dart';
+import 'package:moi_interview/ui/styles/text_styles.dart';
 
 class QuestionModal extends StatelessWidget {
   final TextEditingController controller;
@@ -20,32 +20,32 @@ class QuestionModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorStyles.white,
+      color: ColorStyles.white(context),
       padding: const EdgeInsets.fromLTRB(25, 25, 25, 10),
       child: Form(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               '질문',
-              style: TextStyles.subHeading,
+              style: TextStyles.subHeading(context),
             ),
             const SizedBox(height: 4),
             TextFormField(
               controller: controller,
 
-              cursorColor: ColorStyles.black,
+              cursorColor: ColorStyles.black(context),
               cursorWidth: 1.0,
               decoration: InputDecoration(
                 hintText: '질문을 입력하세요',
-                hintStyle: TextStyles.colorCaption(ColorStyles.gray4),
+                hintStyle: TextStyles.colorCaption(context, ColorStyles.gray4),
                 enabledBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: ColorStyles.gray3, width: 1.0),
                 ),
-                focusedBorder: const UnderlineInputBorder(
-                  borderSide:
-                      BorderSide(color: ColorStyles.primary, width: 1.0),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                      color: ColorStyles.primary(context), width: 1.0),
                 ),
                 contentPadding: const EdgeInsets.only(left: 8.0),
               ),
@@ -58,7 +58,7 @@ class QuestionModal extends StatelessWidget {
               onSaved: (value) {},
             ),
             const SizedBox(height: 20),
-            const Text('답변 시간', style: TextStyles.subHeading),
+            Text('답변 시간', style: TextStyles.subHeading(context)),
             const SizedBox(height: 8),
             SizedBox(
               height: 80,
@@ -82,12 +82,13 @@ class QuestionModal extends StatelessWidget {
                 TextButton(
                   onPressed: onCancelTapped,
                   child: Text('취소',
-                      style: TextStyles.body2.copyWith(fontSize: 17)),
+                      style: TextStyles.body2(context).copyWith(fontSize: 17)),
                 ),
                 TextButton(
                   onPressed: onConfirmTapped,
                   child: Text('저장',
-                      style: TextStyles.colorBody2.copyWith(fontSize: 17)),
+                      style: TextStyles.colorBody2(context)
+                          .copyWith(fontSize: 17)),
                 ),
               ],
             ),

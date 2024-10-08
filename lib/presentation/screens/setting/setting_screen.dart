@@ -6,8 +6,8 @@ import 'package:moi_interview/domain/model/user.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_text_field.dart';
 import 'package:moi_interview/presentation/screens/setting/setting_view_model.dart';
-import 'package:moi_interview/utils/color_styles.dart';
-import 'package:moi_interview/utils/text_styles.dart';
+import 'package:moi_interview/ui/styles/color_styles.dart';
+import 'package:moi_interview/ui/styles/text_styles.dart';
 import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -76,9 +76,9 @@ class _SettingScreenState extends State<SettingScreen> {
     return GestureDetector(
       onTap: _dismissKeyboard,
       child: Scaffold(
-        backgroundColor: ColorStyles.white,
+        backgroundColor: ColorStyles.white(context),
         appBar: AppBar(
-          backgroundColor: ColorStyles.white,
+          backgroundColor: ColorStyles.white(context),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             iconSize: 22,
@@ -86,7 +86,7 @@ class _SettingScreenState extends State<SettingScreen> {
               context.pop(true);
             },
           ),
-          title: const Text('설정', style: TextStyles.heading2),
+          title: Text('설정', style: TextStyles.heading2(context)),
           centerTitle: true,
         ),
         body: SafeArea(
@@ -110,9 +110,9 @@ class _SettingScreenState extends State<SettingScreen> {
                           controller: _wordTextController,
                         ),
                         const SizedBox(height: 20),
-                        const Text(
+                        Text(
                           '함께할 면접관(선택)',
-                          style: TextStyles.caption,
+                          style: TextStyles.caption(context),
                         ),
                         const SizedBox(height: 20),
                         GestureDetector(

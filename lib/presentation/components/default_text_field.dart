@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moi_interview/utils/color_styles.dart';
-import 'package:moi_interview/utils/text_styles.dart';
+import 'package:moi_interview/ui/styles/color_styles.dart';
+import 'package:moi_interview/ui/styles/text_styles.dart';
 
 class DefaultTextField extends StatelessWidget {
   final String title;
@@ -21,20 +21,21 @@ class DefaultTextField extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyles.caption,
+          style: TextStyles.caption(context),
         ),
         TextField(
           controller: controller,
-          cursorColor: ColorStyles.black,
+          cursorColor: ColorStyles.black(context),
           cursorWidth: 1.0,
           decoration: InputDecoration(
             hintText: placeholder,
-            hintStyle: TextStyles.colorCaption(ColorStyles.gray4),
+            hintStyle: TextStyles.colorCaption(context, ColorStyles.gray4),
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: ColorStyles.gray3, width: 1.0),
             ),
-            focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: ColorStyles.primary, width: 1.0),
+            focusedBorder: UnderlineInputBorder(
+              borderSide:
+                  BorderSide(color: ColorStyles.primary(context), width: 1.0),
             ),
             contentPadding: const EdgeInsets.only(left: 8.0),
           ),

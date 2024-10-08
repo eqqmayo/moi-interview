@@ -7,8 +7,8 @@ import 'package:moi_interview/domain/model/question.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/question_modal.dart';
 import 'package:moi_interview/presentation/screens/detail/detail_view_model.dart';
-import 'package:moi_interview/utils/color_styles.dart';
-import 'package:moi_interview/utils/text_styles.dart';
+import 'package:moi_interview/ui/styles/color_styles.dart';
+import 'package:moi_interview/ui/styles/text_styles.dart';
 import 'package:provider/provider.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -40,9 +40,9 @@ class _DetailScreenState extends State<DetailScreen> {
     final viewModel = context.watch<DetailViewModel>();
 
     return Scaffold(
-      backgroundColor: ColorStyles.white,
+      backgroundColor: ColorStyles.white(context),
       appBar: AppBar(
-        backgroundColor: ColorStyles.white,
+        backgroundColor: ColorStyles.white(context),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           iconSize: 22,
@@ -50,7 +50,8 @@ class _DetailScreenState extends State<DetailScreen> {
             context.pop();
           },
         ),
-        title: Text(widget.interview.title, style: TextStyles.heading2),
+        title:
+            Text(widget.interview.title, style: TextStyles.heading2(context)),
         centerTitle: true,
         actions: [
           IconButton(
@@ -96,7 +97,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     );
                   });
             },
-            icon: const Icon(Icons.add, color: ColorStyles.black),
+            icon: Icon(Icons.add, color: ColorStyles.black(context)),
             iconSize: 28,
           )
         ],
@@ -112,7 +113,8 @@ class _DetailScreenState extends State<DetailScreen> {
                 return ListTile(
                   contentPadding: const EdgeInsets.all(8.0),
                   leading: Checkbox(
-                    activeColor: ColorStyles.primary,
+                    activeColor: ColorStyles.primary(context),
+                    checkColor: Colors.white,
                     value: question.isChecked,
                     onChanged: (bool? value) {
                       viewModel.updateCheckState(question);
@@ -122,7 +124,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${question.question}${question.id}',
+                        question.question,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 4.0),

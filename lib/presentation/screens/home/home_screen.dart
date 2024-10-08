@@ -7,8 +7,8 @@ import 'package:moi_interview/domain/model/interview.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_dialog.dart';
 import 'package:moi_interview/presentation/screens/home/home_view_model.dart';
-import 'package:moi_interview/utils/color_styles.dart';
-import 'package:moi_interview/utils/text_styles.dart';
+import 'package:moi_interview/ui/styles/color_styles.dart';
+import 'package:moi_interview/ui/styles/text_styles.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -32,9 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final viewModel = context.watch<HomeViewModel>();
 
     return Scaffold(
-      backgroundColor: ColorStyles.white,
+      backgroundColor: ColorStyles.white(context),
       appBar: AppBar(
-        backgroundColor: ColorStyles.white,
+        backgroundColor: ColorStyles.white(context),
         toolbarHeight: 40.0,
         actions: [
           IconButton(
@@ -44,7 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 viewModel.getUser();
               }
             },
-            icon: const Icon(Icons.settings_outlined),
+            icon: Icon(
+              Icons.settings_sharp,
+              color: ColorStyles.black(context),
+            ),
           ),
         ],
       ),
@@ -59,21 +62,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     TextSpan(
                       text: viewModel.state.user!.name,
-                      style: TextStyles.colorHeading,
+                      style: TextStyles.colorHeading(context),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: '님의 면접\n',
-                      style: TextStyles.heading,
+                      style: TextStyles.heading(context),
                     ),
                     TextSpan(
                       text: viewModel.state.user!.word,
-                      style: TextStyles.heading,
+                      style: TextStyles.heading(context),
                     ),
                   ],
                 ),
               ),
             ),
-            const Divider(color: ColorStyles.gray5, thickness: 16),
+            Divider(color: ColorStyles.gray5(context), thickness: 16),
             Expanded(
               child: Builder(
                 builder: (context) {
@@ -85,12 +88,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? Center(
                           child: Text(
                           '면접을 추가하고 준비를 시작해보세요',
-                          style: TextStyles.body2.copyWith(color: Colors.grey),
+                          style: TextStyles.body2(context)
+                              .copyWith(color: Colors.grey),
                         ))
                       : ListView.separated(
                           itemCount: interviews.length,
-                          separatorBuilder: (context, index) => const Divider(
-                            color: ColorStyles.gray5,
+                          separatorBuilder: (context, index) => Divider(
+                            color: ColorStyles.gray5(context),
                             thickness: 1,
                             height: 1,
                           ),
@@ -121,8 +125,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: ListTile(
                                   title: Text(
                                     titles[index],
-                                    style:
-                                        TextStyles.body.copyWith(fontSize: 18),
+                                    style: TextStyles.body(context)
+                                        .copyWith(fontSize: 18),
                                   ),
                                   contentPadding:
                                       const EdgeInsets.fromLTRB(25, 15, 25, 15),

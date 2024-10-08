@@ -4,8 +4,8 @@ import 'package:moi_interview/domain/model/user.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_text_field.dart';
 import 'package:moi_interview/presentation/screens/sign_up/sign_up_view_model.dart';
-import 'package:moi_interview/utils/color_styles.dart';
-import 'package:moi_interview/utils/text_styles.dart';
+import 'package:moi_interview/ui/styles/color_styles.dart';
+import 'package:moi_interview/ui/styles/text_styles.dart';
 import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -52,7 +52,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return GestureDetector(
       onTap: _dismissKeyboard,
       child: Scaffold(
-        backgroundColor: ColorStyles.white,
+        backgroundColor: ColorStyles.white(context),
         body: SafeArea(
           child: Column(
             children: [
@@ -68,15 +68,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                  text: '이름', style: TextStyles.colorHeading),
-                              const TextSpan(
-                                  text: '과 ', style: TextStyles.heading),
+                                  text: '이름',
+                                  style: TextStyles.colorHeading(context)),
                               TextSpan(
-                                  text: '한마디', style: TextStyles.colorHeading),
-                              const TextSpan(
-                                  text: '를\n', style: TextStyles.heading),
-                              const TextSpan(
-                                  text: '입력해주세요', style: TextStyles.heading),
+                                  text: '과 ',
+                                  style: TextStyles.heading(context)),
+                              TextSpan(
+                                  text: '한마디',
+                                  style: TextStyles.colorHeading(context)),
+                              TextSpan(
+                                  text: '를\n',
+                                  style: TextStyles.heading(context)),
+                              TextSpan(
+                                  text: '입력해주세요',
+                                  style: TextStyles.heading(context)),
                             ],
                           ),
                         ),

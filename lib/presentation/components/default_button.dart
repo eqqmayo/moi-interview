@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moi_interview/utils/color_styles.dart';
+import 'package:moi_interview/ui/styles/color_styles.dart';
 
 class DefaultButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -21,15 +21,16 @@ class DefaultButton extends StatelessWidget {
         child: TextButton(
           onPressed: onPressed,
           style: TextButton.styleFrom(
-              backgroundColor:
-                  onPressed == null ? ColorStyles.gray4 : ColorStyles.primary,
+              backgroundColor: onPressed == null
+                  ? ColorStyles.gray4
+                  : ColorStyles.primary(context),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4.0),
               )),
           child: Text(
             title,
             style: TextStyle(
-              color: onPressed == null ? ColorStyles.gray2 : ColorStyles.white,
+              color: onPressed == null ? ColorStyles.gray2 : Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),
