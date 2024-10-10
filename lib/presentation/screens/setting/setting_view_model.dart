@@ -19,7 +19,8 @@ class SettingViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void saveUser(User user) {
+  void updateUser(String name, String word, String? imagePath) {
+    final user = User(name: name, word: word, interviewerImgPath: imagePath);
     _userRepository.createUser(user);
     _state = state.copyWith(user: user, isButtonEnabled: false);
     notifyListeners();
@@ -38,9 +39,7 @@ class SettingViewModel with ChangeNotifier {
             updatedUser.word != state.user!.word ||
             updatedUser.interviewerImgPath != state.user!.interviewerImgPath);
 
-    _state = state.copyWith(
-      isButtonEnabled: isButtonEnabled,
-    );
+    _state = state.copyWith(isButtonEnabled: isButtonEnabled);
 
     notifyListeners();
   }

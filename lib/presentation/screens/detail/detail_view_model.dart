@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:moi_interview/domain/model/question.dart';
 import 'package:moi_interview/domain/repository/question_repository.dart';
@@ -11,23 +13,37 @@ class DetailViewModel with ChangeNotifier {
 
   DetailViewModel(this._questionRepository);
 
-  void getQuestionsByInterviewId(int interviewId) {
-    final allQuestions = getAllQuestions();
-    final questions = allQuestions
-        .where((quesiton) => quesiton.interviewId == interviewId)
-        .toList();
+  void getQuestions(int interviewId) {
+    final questions = _questionRepository.getQuestions(interviewId);
     _state = state.copyWith(questions: questions);
     notifyListeners();
   }
 
-  void addQuestion(Question question) {
+  void addQuestion(int interviewId, String title, int answerTime) {
+    final int id = state.questions.isEmpty
+        ? 0
+        : state.questions.map((interview) => interview.id).reduce(max);
+
+    final question = Question(
+      id: id + 1,
+      interviewId: interviewId,
+      question: title,
+      answerTime: answerTime,
+    );
+
     _questionRepository.addQuestion(question);
-    getQuestionsByInterviewId(question.interviewId);
+    getQuestions(question.interviewId);
+  }
+
+  void deleteQuestion(int interviewId, int id) {
+    _questionRepository.deleteQuestionById(interviewId, id);
+    getQuestions(interviewId);
   }
 
   void updateCheckState(Question question) {
     final updatedQuestion = question.copyWith(isChecked: !question.isChecked);
     _questionRepository.updateQuestion(updatedQuestion);
+
     final updatedQuestions = state.questions
         .map((question) =>
             question.id == updatedQuestion.id ? updatedQuestion : question)
@@ -40,9 +56,5 @@ class DetailViewModel with ChangeNotifier {
   void setAnswerTime(int time) {
     _state = state.copyWith(answerTime: time);
     notifyListeners();
-  }
-
-  List<Question> getAllQuestions() {
-    return _questionRepository.getQuestions();
   }
 }

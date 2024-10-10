@@ -8,8 +8,8 @@ class QuestionRepositoryImpl implements QuestionRepository {
   QuestionRepositoryImpl(this._questionDataSource);
 
   @override
-  List<Question> getQuestions() {
-    return _questionDataSource.getQuestions();
+  List<Question> getQuestions(int interviewId) {
+    return _questionDataSource.getQuestions(interviewId);
   }
 
   @override
@@ -20,5 +20,15 @@ class QuestionRepositoryImpl implements QuestionRepository {
   @override
   void updateQuestion(Question updatedQuestion) {
     _questionDataSource.updateQuestion(updatedQuestion);
+  }
+
+  @override
+  void deleteQuestions(int interviewId) {
+    _questionDataSource.deleteQuestions(interviewId);
+  }
+
+  @override
+  void deleteQuestionById(int interviewId, int id) {
+    _questionDataSource.deleteQuestionById(interviewId, id);
   }
 }

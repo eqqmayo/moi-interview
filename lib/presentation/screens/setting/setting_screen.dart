@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:moi_interview/domain/model/user.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_text_field.dart';
 import 'package:moi_interview/presentation/screens/setting/setting_view_model.dart';
@@ -155,12 +154,11 @@ class _SettingScreenState extends State<SettingScreen> {
                 title: '저장하기',
                 onPressed: viewModel.state.isButtonEnabled
                     ? () {
-                        final user = User(
-                          name: _nameTextController.text,
-                          word: _wordTextController.text,
-                          interviewerImgPath: _imagePath,
+                        viewModel.updateUser(
+                          _nameTextController.text,
+                          _wordTextController.text,
+                          _imagePath,
                         );
-                        viewModel.saveUser(user);
                       }
                     : null,
               )

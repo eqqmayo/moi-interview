@@ -11,7 +11,8 @@ class SignUpViewModel with ChangeNotifier {
 
   SignUpViewModel(this._userRepository);
 
-  void saveUser(User user) {
+  void createUser(String name, String word) {
+    final user = User(name: name, word: word);
     _userRepository.createUser(user);
     _state = state.copyWith(user: user);
     notifyListeners();

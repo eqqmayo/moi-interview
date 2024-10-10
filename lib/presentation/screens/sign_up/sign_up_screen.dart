@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:moi_interview/domain/model/user.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_text_field.dart';
 import 'package:moi_interview/presentation/screens/sign_up/sign_up_view_model.dart';
@@ -106,12 +105,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 title: '시작하기',
                 onPressed: viewModel.state.isButtonEnabled
                     ? () {
-                        final user = User(
-                          name: _nameTextController.text,
-                          word: _wordTextController.text,
+                        viewModel.createUser(
+                          _nameTextController.text,
+                          _wordTextController.text,
                         );
-
-                        viewModel.saveUser(user);
                         context.go('/home');
                       }
                     : null,

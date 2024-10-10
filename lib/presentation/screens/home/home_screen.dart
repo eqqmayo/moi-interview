@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
@@ -82,12 +80,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context) {
                   final List<Interview> interviews = viewModel.state.interviews;
                   final List<String> titles =
-                      interviews.map((e) => e.title).toList();
+                      interviews.map((e) => '${e.title},${e.id}').toList();
 
                   return titles.isEmpty
                       ? Center(
                           child: Text(
-                          '면접을 추가하고 준비를 시작해보세요',
+                          '면접을 추가하고 질문을 등록해보세요',
                           style: TextStyles.body2(context)
                               .copyWith(color: Colors.grey),
                         ))
@@ -100,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           itemBuilder: (context, index) {
                             return Slidable(
-                              key: Key(titles[index]),
                               endActionPane: ActionPane(
                                 motion: const ScrollMotion(),
                                 extentRatio: 0.2,
@@ -164,17 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         context.pop();
                       },
                       onConfirmTapped: () {
-                        final interviews = viewModel.state.interviews;
-                        int id = interviews.isEmpty
-                            ? 0
-                            : interviews.map((e) => e.id).reduce(max);
-
-                        Interview interview = Interview(
-                          id: id + 1,
-                          title: _titleTextController.text,
-                        );
-                        viewModel.addInterview(interview);
-
+                        viewModel.addInterview(_titleTextController.text);
                         _titleTextController.clear();
                         context.pop();
                       },

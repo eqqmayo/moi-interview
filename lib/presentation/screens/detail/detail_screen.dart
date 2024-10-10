@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moi_interview/domain/model/interview.dart';
-import 'package:moi_interview/domain/model/question.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/question_modal.dart';
 import 'package:moi_interview/presentation/screens/detail/detail_view_model.dart';
@@ -30,7 +28,7 @@ class _DetailScreenState extends State<DetailScreen> {
   void initState() {
     Future.microtask(() {
       final viewModel = context.read<DetailViewModel>();
-      viewModel.getQuestionsByInterviewId(widget.interview.id);
+      viewModel.getQuestions(widget.interview.id);
     });
     super.initState();
   }
@@ -57,45 +55,38 @@ class _DetailScreenState extends State<DetailScreen> {
           IconButton(
             onPressed: () {
               showModalBottomSheet(
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (context) {
-                    return Padding(
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom),
-                      child: SingleChildScrollView(
-                        child: QuestionModal(
-                          onSelectedItemChanged: (index) {
-                            viewModel.setAnswerTime(index + 1);
-                          },
-                          controller: _questionTextController,
-                          onCancelTapped: () {
-                            viewModel.setAnswerTime(3);
-                            _questionTextController.clear();
-                            context.pop();
-                          },
-                          onConfirmTapped: () {
-                            final questions = viewModel.getAllQuestions();
-                            int id = questions.isEmpty
-                                ? 0
-                                : questions.map((e) => e.id).reduce(max);
-
-                            Question question = Question(
-                              id: id + 1,
-                              interviewId: widget.interview.id,
-                              question: _questionTextController.text,
-                              answerTime: viewModel.state.answerTime,
-                            );
-
-                            viewModel.addQuestion(question);
-                            viewModel.setAnswerTime(3);
-                            _questionTextController.clear();
-                            context.pop();
-                          },
-                        ),
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return Padding(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: SingleChildScrollView(
+                      child: QuestionModal(
+                        onSelectedItemChanged: (index) {
+                          viewModel.setAnswerTime(index + 1);
+                        },
+                        controller: _questionTextController,
+                        onCancelTapped: () {
+                          viewModel.setAnswerTime(3);
+                          _questionTextController.clear();
+                          context.pop();
+                        },
+                        onConfirmTapped: () {
+                          viewModel.addQuestion(
+                            widget.interview.id,
+                            _questionTextController.text,
+                            viewModel.state.answerTime,
+                          );
+                          viewModel.setAnswerTime(3);
+                          _questionTextController.clear();
+                          context.pop();
+                        },
                       ),
-                    );
-                  });
+                    ),
+                  );
+                },
+              );
             },
             icon: Icon(Icons.add, color: ColorStyles.black(context)),
             iconSize: 28,
@@ -105,52 +96,77 @@ class _DetailScreenState extends State<DetailScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: viewModel.state.questions.length,
-              itemBuilder: (context, index) {
-                final question = viewModel.state.questions[index];
+            child: viewModel.state.questions.isEmpty
+                ? Center(
+                    child: Text(
+                    '질문을 추가하고 연습을 시작해보세요',
+                    style:
+                        TextStyles.body2(context).copyWith(color: Colors.grey),
+                  ))
+                : ListView.builder(
+                    itemCount: viewModel.state.questions.length,
+                    itemBuilder: (context, index) {
+                      final question = viewModel.state.questions[index];
 
-                return ListTile(
-                  contentPadding: const EdgeInsets.all(8.0),
-                  leading: Checkbox(
-                    activeColor: ColorStyles.primary(context),
-                    checkColor: Colors.white,
-                    value: question.isChecked,
-                    onChanged: (bool? value) {
-                      viewModel.updateCheckState(question);
+                      return Slidable(
+                        endActionPane: ActionPane(
+                          motion: const ScrollMotion(),
+                          extentRatio: 0.2,
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) {
+                                viewModel.deleteQuestion(
+                                    question.interviewId, question.id);
+                              },
+                              backgroundColor: const Color(0xFFFE4A49),
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
+                              label: '삭제',
+                            ),
+                          ],
+                        ),
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.all(8.0),
+                          leading: Checkbox(
+                            activeColor: ColorStyles.primary(context),
+                            checkColor: Colors.white,
+                            value: question.isChecked,
+                            onChanged: (bool? value) {
+                              viewModel.updateCheckState(question);
+                            },
+                          ),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${question.question},${question.id}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 4.0),
+                              Text(
+                                '${question.answerTime}분',
+                                style: const TextStyle(color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
                     },
                   ),
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        question.question,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 4.0),
-                      Text(
-                        '${question.answerTime}분',
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
           ),
           DefaultButton(
             title: '시작하기',
-            onPressed: () {
-              final questions = viewModel.state.questions
-                  .where((e) => e.isChecked == true)
-                  .toList();
-
-              if (questions.isEmpty) {
-                return;
-              } else {
-                context.push('/interview', extra: questions);
-              }
-            },
+            onPressed: viewModel.state.questions
+                    .where((e) => e.isChecked == true)
+                    .isEmpty
+                ? null
+                : () {
+                    final questions = viewModel.state.questions
+                        .where((e) => e.isChecked == true)
+                        .toList();
+                    context.push('/interview', extra: questions);
+                  },
           ),
         ],
       ),
