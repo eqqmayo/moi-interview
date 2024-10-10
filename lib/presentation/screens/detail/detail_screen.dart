@@ -184,14 +184,14 @@ class _DetailScreenState extends State<DetailScreen> {
                   viewModel.updateQuestion(
                     questionToEdit.copyWith(
                       question: _questionTextController.text,
-                      answerTime: viewModel.currentAnswerTime,
+                      answerTime: viewModel.state.currentAnswerTime,
                     ),
                   );
                 } else {
                   viewModel.addQuestion(
                     widget.interview.id,
                     _questionTextController.text,
-                    viewModel.currentAnswerTime,
+                    viewModel.state.currentAnswerTime,
                   );
                 }
                 context.pop();

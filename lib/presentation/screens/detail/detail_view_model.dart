@@ -11,9 +11,6 @@ class DetailViewModel with ChangeNotifier {
   DetailUiState _state = const DetailUiState();
   DetailUiState get state => _state;
 
-  int _currentAnswerTime = 3;
-  int get currentAnswerTime => _currentAnswerTime;
-
   DetailViewModel(this._questionRepository);
 
   void getQuestions(int interviewId) {
@@ -67,7 +64,7 @@ class DetailViewModel with ChangeNotifier {
   }
 
   void setAnswerTime(int time) {
-    _currentAnswerTime = time;
+    _state = state.copyWith(currentAnswerTime: time);
     notifyListeners();
   }
 }

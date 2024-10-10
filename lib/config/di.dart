@@ -29,6 +29,5 @@ void diSetup() {
   getIt.registerFactory(() => SignUpViewModel(getIt()));
   getIt.registerFactory(() => HomeViewModel(getIt(), getIt(), getIt()));
   getIt.registerFactory(() => DetailViewModel(getIt()));
-  // getIt.registerFactory(() => InterviewViewModel(getIt()));
   getIt.registerFactory(() => SettingViewModel(getIt()));
 }

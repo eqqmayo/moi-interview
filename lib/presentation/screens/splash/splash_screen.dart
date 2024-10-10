@@ -25,11 +25,11 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorStyles.primary(context),
-      body: Center(
+      body: const Center(
         child: Text(
           '모의\n면접',
           style: TextStyle(
-            color: ColorStyles.white(context),
+            color: Colors.white,
             fontSize: 50,
             fontWeight: FontWeight.w800,
             letterSpacing: 2.0,

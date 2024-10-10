@@ -51,7 +51,7 @@ final router = GoRouter(
       builder: (context, state) {
         final questions = state.extra as List<Question>;
         return ChangeNotifierProvider(
-          create: (context) => getIt<InterviewViewModel>(),
+          create: (context) => InterviewViewModel(getIt(), questions),
           child: InterviewScreen(questions: questions),
         );
       },
