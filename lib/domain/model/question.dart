@@ -27,13 +27,13 @@ class Question extends HiveObject {
     this.isChecked = false,
   });
 
-  Question copyWith({required bool isChecked}) {
+  Question copyWith({String? question, int? answerTime, bool? isChecked}) {
     return Question(
       id: id,
       interviewId: interviewId,
-      question: question,
-      answerTime: answerTime,
-      isChecked: isChecked,
+      question: question ?? this.question,
+      answerTime: answerTime ?? this.answerTime,
+      isChecked: isChecked ?? this.isChecked,
     );
   }
 }

@@ -8,12 +8,14 @@ class QuestionModal extends StatelessWidget {
   final VoidCallback? onCancelTapped;
   final VoidCallback? onConfirmTapped;
   final void Function(int) onSelectedItemChanged;
+  final int initialAnswerTime;
 
   const QuestionModal({
     super.key,
     required this.controller,
     this.onCancelTapped,
     this.onConfirmTapped,
+    this.initialAnswerTime = 3,
     required this.onSelectedItemChanged,
   });
 
@@ -34,7 +36,6 @@ class QuestionModal extends StatelessWidget {
             const SizedBox(height: 4),
             TextFormField(
               controller: controller,
-
               cursorColor: ColorStyles.black(context),
               cursorWidth: 1.0,
               decoration: InputDecoration(
@@ -49,12 +50,6 @@ class QuestionModal extends StatelessWidget {
                 ),
                 contentPadding: const EdgeInsets.only(left: 8.0),
               ),
-              // validator: (value) {
-              //   if (value == null || value.isEmpty) {
-              //     return '질문을 입력해주세요';
-              //   }
-              //   return null;
-              // },
               onSaved: (value) {},
             ),
             const SizedBox(height: 20),
@@ -65,7 +60,8 @@ class QuestionModal extends StatelessWidget {
               child: CupertinoPicker(
                 itemExtent: 32,
                 onSelectedItemChanged: (value) => onSelectedItemChanged(value),
-                scrollController: FixedExtentScrollController(initialItem: 2),
+                scrollController: FixedExtentScrollController(
+                    initialItem: initialAnswerTime - 1),
                 children: List.generate(5, (int index) {
                   return Center(
                     child: Text(

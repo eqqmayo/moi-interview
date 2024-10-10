@@ -11,6 +11,9 @@ class DetailViewModel with ChangeNotifier {
   DetailUiState _state = const DetailUiState();
   DetailUiState get state => _state;
 
+  int _currentAnswerTime = 3;
+  int get currentAnswerTime => _currentAnswerTime;
+
   DetailViewModel(this._questionRepository);
 
   void getQuestions(int interviewId) {
@@ -40,6 +43,16 @@ class DetailViewModel with ChangeNotifier {
     getQuestions(interviewId);
   }
 
+  void updateQuestion(Question updatedQuestion) {
+    final updatedQuestions = state.questions.map((question) {
+      return question.id == updatedQuestion.id ? updatedQuestion : question;
+    }).toList();
+
+    _state = _state.copyWith(questions: updatedQuestions);
+    _questionRepository.updateQuestion(updatedQuestion);
+    notifyListeners();
+  }
+
   void updateCheckState(Question question) {
     final updatedQuestion = question.copyWith(isChecked: !question.isChecked);
     _questionRepository.updateQuestion(updatedQuestion);
@@ -54,7 +67,7 @@ class DetailViewModel with ChangeNotifier {
   }
 
   void setAnswerTime(int time) {
-    _state = state.copyWith(answerTime: time);
+    _currentAnswerTime = time;
     notifyListeners();
   }
 }

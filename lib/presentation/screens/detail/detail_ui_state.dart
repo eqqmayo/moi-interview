@@ -7,7 +7,6 @@ part 'detail_ui_state.freezed.dart';
 class DetailUiState with _$DetailUiState {
   const factory DetailUiState({
     @Default([]) List<Question> questions,
-    @Default(3) int answerTime,
     @Default(false) bool isButtonEnabled,
   }) = _DetailUiState;
 }

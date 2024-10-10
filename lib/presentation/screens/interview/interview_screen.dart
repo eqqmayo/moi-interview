@@ -68,7 +68,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: ColorStyles.white(context),
           image: DecorationImage(
             image: Hive.box('user').get('imagePath') == null
                 ? const AssetImage('assets/images/interviewer.jpg')
@@ -92,7 +92,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
             // ),
             FloatingActionButton(
               backgroundColor: ColorStyles.primary(context),
-              foregroundColor: ColorStyles.white(context),
+              foregroundColor: Colors.white,
               onPressed: () {
                 context.pop();
               },

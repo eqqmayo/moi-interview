@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context) {
                   final List<Interview> interviews = viewModel.state.interviews;
                   final List<String> titles =
-                      interviews.map((e) => '${e.title},${e.id}').toList();
+                      interviews.map((e) => e.title).toList();
 
                   return titles.isEmpty
                       ? Center(

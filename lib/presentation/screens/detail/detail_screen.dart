@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moi_interview/domain/model/interview.dart';
+import 'package:moi_interview/domain/model/question.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/question_modal.dart';
 import 'package:moi_interview/presentation/screens/detail/detail_view_model.dart';
@@ -42,7 +43,10 @@ class _DetailScreenState extends State<DetailScreen> {
       appBar: AppBar(
         backgroundColor: ColorStyles.white(context),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: ColorStyles.black(context),
+          ),
           iconSize: 22,
           onPressed: () {
             context.pop();
@@ -53,41 +57,7 @@ class _DetailScreenState extends State<DetailScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {
-              showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder: (context) {
-                  return Padding(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: SingleChildScrollView(
-                      child: QuestionModal(
-                        onSelectedItemChanged: (index) {
-                          viewModel.setAnswerTime(index + 1);
-                        },
-                        controller: _questionTextController,
-                        onCancelTapped: () {
-                          viewModel.setAnswerTime(3);
-                          _questionTextController.clear();
-                          context.pop();
-                        },
-                        onConfirmTapped: () {
-                          viewModel.addQuestion(
-                            widget.interview.id,
-                            _questionTextController.text,
-                            viewModel.state.answerTime,
-                          );
-                          viewModel.setAnswerTime(3);
-                          _questionTextController.clear();
-                          context.pop();
-                        },
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
+            onPressed: () => _showQuestionModal(context, viewModel),
             icon: Icon(Icons.add, color: ColorStyles.black(context)),
             iconSize: 28,
           )
@@ -139,7 +109,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${question.question},${question.id}',
+                                question.question,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -150,6 +120,12 @@ class _DetailScreenState extends State<DetailScreen> {
                               ),
                             ],
                           ),
+                          onTap: () {
+                            _questionTextController.text = question.question;
+                            viewModel.setAnswerTime(question.answerTime);
+                            _showQuestionModal(context, viewModel,
+                                questionToEdit: question);
+                          },
                         ),
                       );
                     },
@@ -170,6 +146,61 @@ class _DetailScreenState extends State<DetailScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showQuestionModal(BuildContext context, DetailViewModel viewModel,
+      {Question? questionToEdit}) {
+    int initialAnswerTime = questionToEdit?.answerTime ?? 3;
+
+    viewModel.setAnswerTime(initialAnswerTime);
+
+    if (questionToEdit != null) {
+      _questionTextController.text = questionToEdit.question;
+    } else {
+      _questionTextController.clear();
+    }
+
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: SingleChildScrollView(
+            child: QuestionModal(
+              initialAnswerTime: initialAnswerTime,
+              onSelectedItemChanged: (index) {
+                viewModel.setAnswerTime(index + 1);
+              },
+              controller: _questionTextController,
+              onCancelTapped: () {
+                context.pop();
+                _questionTextController.clear();
+              },
+              onConfirmTapped: () {
+                if (questionToEdit != null) {
+                  viewModel.updateQuestion(
+                    questionToEdit.copyWith(
+                      question: _questionTextController.text,
+                      answerTime: viewModel.currentAnswerTime,
+                    ),
+                  );
+                } else {
+                  viewModel.addQuestion(
+                    widget.interview.id,
+                    _questionTextController.text,
+                    viewModel.currentAnswerTime,
+                  );
+                }
+                context.pop();
+                _questionTextController.clear();
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }
