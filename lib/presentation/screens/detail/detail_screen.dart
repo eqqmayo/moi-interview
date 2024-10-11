@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:moi_interview/domain/model/interview.dart';
 import 'package:moi_interview/domain/model/question.dart';
+import 'package:moi_interview/presentation/ad/admob_service.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/question_modal.dart';
 import 'package:moi_interview/presentation/screens/detail/detail_view_model.dart';
@@ -24,14 +26,35 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   final TextEditingController _questionTextController = TextEditingController();
+  late final BannerAd? _bannerAd;
+  bool _isAdLoaded = false;
 
   @override
   void initState() {
+    _loadBannerAd();
+
     Future.microtask(() {
-      final viewModel = context.read<DetailViewModel>();
-      viewModel.getQuestions(widget.interview.id);
+      if (mounted) {
+        final viewModel = context.read<DetailViewModel>();
+        viewModel.getQuestions(widget.interview.id);
+      }
     });
     super.initState();
+  }
+
+  void _loadBannerAd() {
+    _bannerAd = AdmobService.createBannerAd()
+      ..load().then((_) {
+        setState(() {
+          _isAdLoaded = true;
+        });
+      });
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
   }
 
   @override
@@ -63,6 +86,13 @@ class _DetailScreenState extends State<DetailScreen> {
           )
         ],
       ),
+      bottomNavigationBar: _isAdLoaded && _bannerAd != null
+          ? SizedBox(
+              height: _bannerAd.size.height.toDouble(),
+              width: _bannerAd.size.width.toDouble(),
+              child: AdWidget(ad: _bannerAd),
+            )
+          : null,
       body: Column(
         children: [
           Expanded(

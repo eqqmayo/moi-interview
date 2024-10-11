@@ -40,7 +40,7 @@ class InterviewViewModel extends ChangeNotifier {
     try {
       await _flutterTts.speak(questions[state.currentQuestionIndex].question);
     } catch (e) {
-      print("Error speaking: $e");
+      debugPrint("Error speaking: $e");
     }
   }
 

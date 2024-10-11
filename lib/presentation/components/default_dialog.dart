@@ -62,7 +62,7 @@ class _DefaultDialogState extends State<DefaultDialog> {
                 widget.title,
                 style: TextStyles.subHeading(context),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextField(
                 cursorColor: ColorStyles.black(context),
                 cursorWidth: 1.0,

@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:moi_interview/presentation/ad/admob_service.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_text_field.dart';
 import 'package:moi_interview/presentation/screens/setting/setting_view_model.dart';
@@ -23,9 +25,14 @@ class _SettingScreenState extends State<SettingScreen> {
 
   String? _imagePath;
 
+  late final BannerAd? _bannerAd;
+  bool _isAdLoaded = false;
+
   @override
   void initState() {
     super.initState();
+    _loadBannerAd();
+
     _viewModel = context.read<SettingViewModel>();
 
     _nameTextController =
@@ -45,8 +52,19 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 
+  void _loadBannerAd() {
+    _bannerAd = AdmobService.createBannerAd()
+      ..load().then((_) {
+        setState(() {
+          _isAdLoaded = true;
+        });
+      });
+  }
+
   @override
   void dispose() {
+    _bannerAd?.dispose();
+
     _nameTextController.dispose();
     _wordTextController.dispose();
     _nameTextController.removeListener(_onTextChanged);
@@ -88,6 +106,13 @@ class _SettingScreenState extends State<SettingScreen> {
           title: Text('설정', style: TextStyles.heading2(context)),
           centerTitle: true,
         ),
+        bottomNavigationBar: _isAdLoaded && _bannerAd != null
+            ? SizedBox(
+                height: _bannerAd.size.height.toDouble(),
+                width: _bannerAd.size.width.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              )
+            : null,
         body: SafeArea(
           child: Column(
             children: [
