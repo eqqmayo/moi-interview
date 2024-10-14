@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:moi_interview/domain/model/interview.dart';
 import 'package:moi_interview/domain/model/question.dart';
-import 'package:moi_interview/presentation/ad/admob_service.dart';
+import 'package:moi_interview/service/ad/admob_service.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/question_modal.dart';
 import 'package:moi_interview/presentation/screens/detail/detail_view_model.dart';
@@ -86,13 +86,13 @@ class _DetailScreenState extends State<DetailScreen> {
           )
         ],
       ),
-      bottomNavigationBar: _isAdLoaded && _bannerAd != null
-          ? SizedBox(
-              height: _bannerAd.size.height.toDouble(),
-              width: _bannerAd.size.width.toDouble(),
-              child: AdWidget(ad: _bannerAd),
-            )
-          : null,
+      // bottomNavigationBar: _isAdLoaded && _bannerAd != null
+      //     ? SizedBox(
+      //         height: _bannerAd.size.height.toDouble(),
+      //         width: _bannerAd.size.width.toDouble(),
+      //         child: AdWidget(ad: _bannerAd),
+      //       )
+      //     : null,
       body: Column(
         children: [
           Expanded(

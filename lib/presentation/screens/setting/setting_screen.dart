@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:moi_interview/presentation/ad/admob_service.dart';
+import 'package:moi_interview/service/ad/admob_service.dart';
 import 'package:moi_interview/presentation/components/default_button.dart';
 import 'package:moi_interview/presentation/components/default_text_field.dart';
 import 'package:moi_interview/presentation/screens/setting/setting_view_model.dart';
@@ -97,7 +97,10 @@ class _SettingScreenState extends State<SettingScreen> {
         appBar: AppBar(
           backgroundColor: ColorStyles.white(context),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: ColorStyles.black(context),
+            ),
             iconSize: 22,
             onPressed: () {
               context.pop(true);
@@ -106,13 +109,13 @@ class _SettingScreenState extends State<SettingScreen> {
           title: Text('설정', style: TextStyles.heading2(context)),
           centerTitle: true,
         ),
-        bottomNavigationBar: _isAdLoaded && _bannerAd != null
-            ? SizedBox(
-                height: _bannerAd.size.height.toDouble(),
-                width: _bannerAd.size.width.toDouble(),
-                child: AdWidget(ad: _bannerAd),
-              )
-            : null,
+        // bottomNavigationBar: _isAdLoaded && _bannerAd != null
+        //     ? SizedBox(
+        //         height: _bannerAd.size.height.toDouble(),
+        //         width: _bannerAd.size.width.toDouble(),
+        //         child: AdWidget(ad: _bannerAd),
+        //       )
+        //     : null,
         body: SafeArea(
           child: Column(
             children: [
