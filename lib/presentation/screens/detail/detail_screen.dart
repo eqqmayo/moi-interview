@@ -64,6 +64,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       backgroundColor: ColorStyles.white(context),
       appBar: AppBar(
+        toolbarHeight: 80,
         backgroundColor: ColorStyles.white(context),
         leading: IconButton(
           icon: Icon(
@@ -141,7 +142,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               Text(
                                 question.question,
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.w500),
                               ),
                               const SizedBox(height: 4.0),
                               Text(

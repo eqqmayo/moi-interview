@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: ColorStyles.white(context),
       appBar: AppBar(
         backgroundColor: ColorStyles.white(context),
-        toolbarHeight: 40.0,
+        toolbarHeight: 70,
         actions: [
           IconButton(
             onPressed: () async {

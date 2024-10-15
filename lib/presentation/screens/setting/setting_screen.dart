@@ -95,6 +95,7 @@ class _SettingScreenState extends State<SettingScreen> {
       child: Scaffold(
         backgroundColor: ColorStyles.white(context),
         appBar: AppBar(
+          toolbarHeight: 80,
           backgroundColor: ColorStyles.white(context),
           leading: IconButton(
             icon: Icon(
